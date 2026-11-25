@@ -1,0 +1,670 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>body{margin:0}</style>
+<title>Cybernetics Field Guide</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one long learning path. Numbered sections run in teaching order, each pairing a short explanation with a live model you can push around. */
+:root{
+  --bg:#eef2f5; --surface:#fbfcfd; --soft:#e1e8ee; --fg:#14212b; --muted:#566574; --line:#cbd5de;
+  --loop:#0b6e6e; --loop-soft:#d3ebea; --err:#c4410c; --err-soft:#f6ddd1; --sig:#2f5fd0;
+  --display:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0e171e; --surface:#152129; --soft:#1c2b35; --fg:#e4ecf1; --muted:#9aaab6; --line:#2a3945;
+    --loop:#3cc0b8; --loop-soft:#17393a; --err:#ff8a57; --err-soft:#3d2418; --sig:#7ea2ff; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0e171e; --surface:#152129; --soft:#1c2b35; --fg:#e4ecf1; --muted:#9aaab6; --line:#2a3945;
+  --loop:#3cc0b8; --loop-soft:#17393a; --err:#ff8a57; --err-soft:#3d2418; --sig:#7ea2ff; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.6;
+  padding-block:0 4rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+.wrap{max-width:1040px;margin:0 auto}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;line-height:1.15;margin:0}
+h1{font-size:clamp(2.4rem,6vw,4.2rem);font-weight:700;letter-spacing:-.02em}
+h2{font-size:clamp(1.6rem,3.2vw,2.2rem);font-weight:700;letter-spacing:-.01em}
+h3{font-size:1.15rem;font-weight:700}
+p{margin:0 0 1em;max-width:65ch}
+a{color:var(--sig)}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--sig);outline-offset:2px}
+.eyebrow{font-family:var(--mono);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.mono{font-family:var(--mono)}
+
+/* nav */
+nav.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:11;background:var(--bg);border-bottom:1px solid var(--line);margin:0 calc(-1*max(16px,env(safe-area-inset-left,0px)));padding:.5rem max(16px,env(safe-area-inset-left,0px))}
+nav.top .row{max-width:1040px;margin:0 auto;display:flex;gap:.25rem;overflow-x:auto;scrollbar-width:thin}
+nav.top a{white-space:nowrap;text-decoration:none;color:var(--muted);font-size:.85rem;padding:.35rem .7rem;border-radius:99px;font-weight:500}
+nav.top a:hover,nav.top a.on{background:var(--soft);color:var(--fg)}
+
+/* hero */
+.hero{padding-block:3rem 2rem}
+.hero p.lede{font-size:1.2rem;margin-top:1.2rem;max-width:58ch}
+.hero .ety{margin-top:1rem;font-family:var(--mono);font-size:.85rem;color:var(--muted)}
+
+section{padding-block:3.5rem 1rem;border-top:1px solid var(--line);margin-top:2.5rem}
+section .head{display:flex;gap:1rem;align-items:baseline;flex-wrap:wrap;margin-bottom:1rem}
+section .head .no{font-family:var(--mono);color:var(--loop);font-size:.9rem;font-weight:500}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:2rem;align-items:start}
+@media (max-width:820px){.two{grid-template-columns:minmax(0,1fr)}}
+
+/* chips + buttons */
+.chips{display:flex;flex-wrap:wrap;gap:.4rem}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:.3rem .8rem;font-size:.85rem;cursor:pointer}
+.chip:hover{border-color:var(--loop)}
+.chip[aria-pressed="true"]{background:var(--loop);border-color:var(--loop);color:var(--surface);font-weight:600}
+.btn{border:1px solid var(--loop);background:var(--loop);color:var(--surface);border-radius:6px;padding:.45rem 1rem;font-weight:600;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--loop)}
+.btn:hover{filter:brightness(1.08)}
+
+/* loop stations */
+.stations{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.7rem;margin-top:1.4rem}
+.st{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:.8rem .9rem;transition:border-color .25s,background .25s}
+.st .role{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between}
+.st .val{font-weight:500;margin-top:.3rem;font-size:.95rem;line-height:1.35}
+.st.on{border-color:var(--loop);background:var(--loop-soft)}
+.st.goal{border-style:dashed}
+.st.world .role b{color:var(--err)}
+.loopnote{font-family:var(--mono);font-size:.8rem;color:var(--muted);margin-top:.8rem}
+
+/* labs */
+.lab{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:1.1rem}
+.ctl{display:grid;gap:.9rem}
+.ctl label{display:grid;gap:.15rem;font-size:.88rem;font-weight:500}
+.ctl label .v{font-family:var(--mono);color:var(--loop);float:right;font-weight:500}
+.ctl .line{display:flex;justify-content:space-between;gap:1rem}
+input[type=range]{width:100%;accent-color:var(--loop)}
+input[type=checkbox]{accent-color:var(--loop);width:1.05rem;height:1.05rem;vertical-align:-3px;margin-right:.4rem}
+canvas{width:100%;height:280px;display:block;border-radius:6px;background:var(--bg)}
+.legend{display:flex;flex-wrap:wrap;gap:.4rem 1.1rem;font-size:.8rem;color:var(--muted);margin:.6rem 0}
+.legend i{display:inline-block;width:18px;height:0;border-top:3px solid;vertical-align:middle;margin-right:.4rem}
+.legend i.dash{border-top-style:dashed;border-top-width:2px}
+.verdict{margin-top:.7rem;padding:.7rem .9rem;border-radius:6px;background:var(--soft);font-size:.92rem}
+.verdict b{font-family:var(--mono)}
+.verdict.bad{background:var(--err-soft)}
+.verdict.good{background:var(--loop-soft)}
+.ex{margin-top:1.2rem;border-left:3px solid var(--loop);padding:.2rem 0 .2rem 1rem;font-size:.92rem}
+.ex b{display:block;font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.ex p{margin:.2rem 0 0}
+
+/* variety bars */
+.bars{display:grid;grid-template-columns:repeat(auto-fill,minmax(34px,1fr));gap:6px;align-items:end;height:170px;padding:.5rem 0}
+.bar{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;gap:3px;font-family:var(--mono);font-size:.68rem;color:var(--muted)}
+.bar span.col{width:100%;border-radius:3px 3px 0 0;background:var(--loop);min-height:2px}
+.bar.miss span.col{background:var(--err)}
+
+/* vsm */
+svg.vsm{width:100%;height:auto;display:block}
+svg.vsm .node rect{fill:var(--surface);stroke:var(--line);stroke-width:1.5;rx:6;transition:fill .2s,stroke .2s}
+svg.vsm .node{cursor:pointer}
+svg.vsm .node:hover rect{stroke:var(--loop)}
+svg.vsm .node.sel rect{fill:var(--loop-soft);stroke:var(--loop);stroke-width:2.5}
+svg.vsm text{fill:var(--fg);font-family:var(--body);font-size:12px;pointer-events:none}
+svg.vsm text.t{font-family:var(--mono);font-weight:500;font-size:12px;fill:var(--loop)}
+svg.vsm .env rect{fill:var(--soft);stroke:var(--line);stroke-dasharray:4 4;stroke-width:1.5;rx:14}
+svg.vsm .env text{fill:var(--muted)}
+svg.vsm line,svg.vsm path{stroke:var(--muted);stroke-width:1.3;fill:none}
+svg.vsm line.dash{stroke-dasharray:4 3}
+.vsmpanel{margin-top:1rem;padding:1rem 1.1rem;border:1px solid var(--line);border-radius:8px;background:var(--surface);min-height:11rem}
+.vsmpanel h3{margin-bottom:.4rem}
+.vsmpanel .k{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:.7rem;display:block}
+.vsmpanel p{margin:.15rem 0 0}
+
+/* concept cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem;margin-top:1.2rem}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:1rem 1.1rem}
+.card h3{margin-bottom:.4rem}
+.card p{margin:0;font-size:.94rem}
+.card .by{font-family:var(--mono);font-size:.75rem;color:var(--muted);margin-bottom:.5rem;display:block}
+
+/* case files */
+.case{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.5rem}
+.case .yr{font-family:var(--mono);font-size:.78rem;color:var(--loop)}
+.case dl{margin:0;display:grid;grid-template-columns:5.2rem minmax(0,1fr);gap:.3rem .7rem;font-size:.88rem}
+.case dt{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:.15rem}
+.case dd{margin:0}
+.case .catch{border-top:1px solid var(--line);padding-top:.6rem;font-size:.9rem}
+.casegrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;margin-top:1.2rem}
+
+/* timeline */
+.tl{list-style:none;margin:1.2rem 0 0;padding:0;border-left:2px solid var(--line)}
+.tl li{position:relative;padding:0 0 1.2rem 1.4rem}
+.tl li::before{content:"";position:absolute;left:-7px;top:.45rem;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--loop)}
+.tl .y{font-family:var(--mono);color:var(--loop);font-size:.85rem;font-weight:500}
+.tl b{display:block}
+.tl span{color:var(--muted);font-size:.93rem}
+
+/* quiz */
+.q{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:1rem 1.1rem;margin-top:1rem}
+.q p{margin:0 0 .7rem}
+.q .opts{display:flex;gap:.5rem;flex-wrap:wrap}
+.q .why{margin:.7rem 0 0;font-size:.92rem;padding:.6rem .8rem;border-radius:6px}
+.q .why.ok{background:var(--loop-soft)}
+.q .why.no{background:var(--err-soft)}
+.score{font-family:var(--mono);margin-top:1rem;color:var(--muted)}
+
+.read{display:grid;gap:.8rem;margin-top:1rem;padding:0;list-style:none}
+.read li{padding:.7rem 1rem;background:var(--surface);border:1px solid var(--line);border-radius:8px;font-size:.94rem}
+.read b{font-weight:600}
+footer{margin-top:3rem;color:var(--muted);font-size:.85rem}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+
+<nav class="top" aria-label="Sections"><div class="row" id="navrow"></div></nav>
+
+<header class="hero" id="top">
+  <div class="eyebrow">A guided tour with working models</div>
+  <h1>Cybernetics Field Guide</h1>
+  <p class="lede">Cybernetics asks how anything, a thermostat, a cell or a government, keeps itself on course while the world pushes back. Seven short lessons, each with a model you can change and a real case behind it.</p>
+  <p class="ety">κυβερνήτης (<i>kybernetes</i>) = steersman. Latin turned it into <i>gubernator</i>, and from there we get “governor” and “govern”.</p>
+
+  <div style="margin-top:2rem">
+    <div class="eyebrow" style="margin-bottom:.5rem">The one loop everything else is built from. Pick an example.</div>
+    <div class="chips" id="exchips" role="group" aria-label="Example system"></div>
+    <div class="stations" id="stations"></div>
+    <div class="loopnote">Step 5 feeds step 1. That return path is the whole idea: the system’s output becomes part of its own input.</div>
+  </div>
+</header>
+
+<!-- 1 -->
+<section id="balance">
+  <div class="head"><span class="no">01</span><h2>Balancing feedback holds a course</h2></div>
+  <div class="two">
+    <div>
+      <p>A balancing (negative) loop pushes against change. The room is too cold, so the heater turns on. The room is warm enough, so it turns off. The size of the push depends on the gap between goal and reality.</p>
+      <p>Two knobs decide whether it behaves well. <b>Gain</b> is how hard the controller reacts to the gap. <b>Delay</b> is how old the controller’s information is. High gain plus delay is the classic recipe for hunting, the swing back and forth you know from a shower that is always too hot or too cold.</p>
+      <p>Try the presets, then open the window at minute 60 and watch what the controller can and cannot do.</p>
+      <div class="ex"><b>Real example</b><p>James Watt’s flyball governor (1788) used this exact loop to hold an engine at constant speed. In 1868 James Clerk Maxwell wrote the first mathematical analysis of why some governors hunt and others settle. Norbert Wiener later named the field after the word “governor”.</p></div>
+    </div>
+    <div class="lab">
+      <div class="chips" id="p1" style="margin-bottom:1rem"></div>
+      <div class="ctl">
+        <label><span class="line"><span>Goal (setpoint)</span><span class="v" id="v1sp"></span></span><input type="range" id="sp" min="15" max="25" step="0.5" value="21"></label>
+        <label><span class="line"><span>Gain: how hard it reacts</span><span class="v" id="v1g"></span></span><input type="range" id="gain" min="0.1" max="3" step="0.1" value="0.6"></label>
+        <label><span class="line"><span>Delay: how stale the sensor is</span><span class="v" id="v1d"></span></span><input type="range" id="delay" min="0" max="10" step="0.5" value="0"></label>
+        <label><span class="line"><span>Outside temperature</span><span class="v" id="v1o"></span></span><input type="range" id="out" min="-5" max="15" step="1" value="5"></label>
+        <label><span><input type="checkbox" id="win">Open the window from minute 60 to 80</span></label>
+      </div>
+      <div style="height:.9rem"></div>
+      <canvas id="c1" role="img" aria-label="Room temperature over 120 minutes with heater output"></canvas>
+      <div class="legend"><span><i style="border-color:var(--loop)"></i>Room temperature</span><span><i class="dash" style="border-color:var(--sig)"></i>Goal</span><span><i class="dash" style="border-color:var(--muted)"></i>Outside</span><span><i style="border-color:var(--err)"></i>Heater output (bottom band)</span></div>
+      <div class="verdict" id="verdict1"></div>
+      <div style="margin-top:.8rem"><button class="btn ghost" id="replay1">Replay the run</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section id="reinforce">
+  <div class="head"><span class="no">02</span><h2>Reinforcing feedback amplifies</h2></div>
+  <div class="two">
+    <div>
+      <p>A reinforcing (positive) loop feeds a change back into itself, so more leads to more. “Positive” means it adds, not that it is good. Compound interest, a viral post and a bank run are all the same shape.</p>
+      <p>Nothing grows forever, so a reinforcing loop in the real world almost always meets a balancing loop that finally caps it. Switch the limit on and off and compare the curves. Most of what looks like “exponential growth” is the early part of an S-curve.</p>
+      <div class="ex"><b>Real example</b><p>Arctic ice reflects sunlight. Warming melts ice, dark water absorbs more heat, and that melts more ice. Climate scientists call it the ice-albedo feedback, and it is one reason polar warming outpaces the global average.</p></div>
+    </div>
+    <div class="lab">
+      <div class="chips" id="p2" style="margin-bottom:1rem"></div>
+      <div class="ctl">
+        <label><span class="line"><span>Strength of the loop (growth rate per unit time)</span><span class="v" id="v2r"></span></span><input type="range" id="rate" min="0.05" max="0.8" step="0.01" value="0.35"></label>
+        <label><span class="line"><span>Starting amount</span><span class="v" id="v2x"></span></span><input type="range" id="x0" min="0.1" max="10" step="0.1" value="1"></label>
+        <label><span><input type="checkbox" id="lim" checked>Add a balancing limit (a ceiling of 100)</span></label>
+      </div>
+      <div style="height:.9rem"></div>
+      <canvas id="c2" role="img" aria-label="Growth curve with and without a limiting loop"></canvas>
+      <div class="legend"><span><i style="border-color:var(--loop)"></i><span id="l2a">With limit</span></span><span><i class="dash" style="border-color:var(--err)"></i><span id="l2b">Without limit (clipped at the top)</span></span></div>
+      <div class="verdict" id="verdict2"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 3 -->
+<section id="variety">
+  <div class="head"><span class="no">03</span><h2>Only variety can absorb variety</h2></div>
+  <div class="two">
+    <div>
+      <p>W. Ross Ashby’s law of requisite variety says a regulator must be able to do at least as many different things as the disturbances it faces can do to it. A help desk with 5 canned replies cannot fully handle 14 kinds of problem, however hard it works.</p>
+      <p>You have two honest options. <b>Amplify</b> the regulator: add responses, train people, give them more tools. Or <b>attenuate</b> the disturbances: group similar cases, standardize, triage. Tick the triage box and see how much the same team can then absorb.</p>
+      <div class="ex"><b>Real example</b><p>The immune system keeps billions of distinct antibody variants in reserve because pathogens vary enormously. A chess grandmaster matches the variety of a position by pattern recognition built over years. Both are requisite variety at work.</p></div>
+    </div>
+    <div class="lab">
+      <div class="ctl">
+        <label><span class="line"><span>Kinds of disturbance (D)</span><span class="v" id="v3d"></span></span><input type="range" id="D" min="2" max="16" step="1" value="12"></label>
+        <label><span class="line"><span>Responses the regulator has (R)</span><span class="v" id="v3r"></span></span><input type="range" id="R" min="1" max="16" step="1" value="4"></label>
+        <label><span><input type="checkbox" id="triage">Triage: treat similar disturbances in pairs (one response covers both)</span></label>
+      </div>
+      <div class="bars" id="bars" aria-label="Disturbances handled and missed"></div>
+      <div class="legend"><span><i style="border-color:var(--loop)"></i>Absorbed</span><span><i style="border-color:var(--err)"></i>Gets through</span></div>
+      <div class="verdict" id="verdict3"></div>
+      <div style="margin-top:.8rem"><button class="btn ghost" id="roll3">Roll 300 new disturbances</button></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section id="viable">
+  <div class="head"><span class="no">04</span><h2>A viable organization is loops inside loops</h2></div>
+  <div class="two">
+    <div>
+      <p>Stafford Beer asked what any organization needs in order to survive, whether a firm, a hospital or a country. His Viable System Model says five functions are enough, and each operating unit must itself contain all five. That recursion is the point.</p>
+      <p>Click each box. The model is easiest to learn by asking of your own team: who does this job here?</p>
+      <div class="ex"><b>Real example</b><p>In 1971 Chile’s Allende government invited Beer to help run the nationalized economy. The project, Cybersyn, linked factories to Santiago by telex, filtered the numbers statistically, and gave managers a control room. It was unfinished when the 1973 coup ended it, and historians still argue about how much it did.</p></div>
+    </div>
+    <div>
+      <div class="lab" style="padding:.6rem">
+        <svg class="vsm" viewBox="0 0 560 372" role="group" aria-label="Viable System Model diagram. Click a box to read about it.">
+          <g class="env"><rect x="466" y="96" width="86" height="236"/><text x="509" y="214" text-anchor="middle" font-size="12">Environment</text></g>
+          <line x1="270" y1="64" x2="190" y2="96"/><line x1="270" y1="64" x2="370" y2="96"/>
+          <line x1="262" y1="123" x2="298" y2="123"/>
+          <line x1="440" y1="123" x2="466" y2="123"/>
+          <line x1="190" y1="150" x2="190" y2="184"/>
+          <line class="dash" x1="150" y1="218" x2="150" y2="264"/><line class="dash" x1="280" y1="218" x2="280" y2="264"/><line class="dash" x1="410" y1="218" x2="410" y2="264"/>
+          <path d="M150 334 V352 H509 V332"/><path d="M280 334 V352"/><path d="M410 334 V352"/>
+          <line class="dash" x1="98" y1="123" x2="120" y2="123"/>
+          <g class="node" data-id="s5" tabindex="0" role="button" aria-label="System 5, policy"><rect x="170" y="14" width="200" height="50"/><text class="t" x="270" y="35" text-anchor="middle">S5 POLICY</text><text x="270" y="53" text-anchor="middle">Who are we?</text></g>
+          <g class="node" data-id="s4" tabindex="0" role="button" aria-label="System 4, intelligence"><rect x="298" y="96" width="142" height="54"/><text class="t" x="369" y="119" text-anchor="middle">S4 INTELLIGENCE</text><text x="369" y="138" text-anchor="middle">Outside, later</text></g>
+          <g class="node" data-id="s3" tabindex="0" role="button" aria-label="System 3, control"><rect x="120" y="96" width="142" height="54"/><text class="t" x="191" y="119" text-anchor="middle">S3 CONTROL</text><text x="191" y="138" text-anchor="middle">Inside, now</text></g>
+          <g class="node" data-id="s3s" tabindex="0" role="button" aria-label="System 3 star, audit"><rect x="12" y="96" width="86" height="54"/><text class="t" x="55" y="119" text-anchor="middle">S3* AUDIT</text><text x="55" y="138" text-anchor="middle">Spot checks</text></g>
+          <g class="node" data-id="s2" tabindex="0" role="button" aria-label="System 2, coordination"><rect x="100" y="184" width="340" height="34"/><text class="t" x="270" y="206" text-anchor="middle">S2 COORDINATION</text></g>
+          <g class="node" data-id="s1" tabindex="0" role="button" aria-label="System 1, operations"><rect x="100" y="264" width="100" height="70"/><text class="t" x="150" y="294" text-anchor="middle">S1</text><text x="150" y="314" text-anchor="middle">Unit A</text></g>
+          <g class="node" data-id="s1" tabindex="0" role="button" aria-label="System 1, operations"><rect x="230" y="264" width="100" height="70"/><text class="t" x="280" y="294" text-anchor="middle">S1</text><text x="280" y="314" text-anchor="middle">Unit B</text></g>
+          <g class="node" data-id="s1" tabindex="0" role="button" aria-label="System 1, operations"><rect x="360" y="264" width="100" height="70"/><text class="t" x="410" y="294" text-anchor="middle">S1</text><text x="410" y="314" text-anchor="middle">Unit C</text></g>
+        </svg>
+      </div>
+      <div class="vsmpanel" id="vsmpanel" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section id="observer">
+  <div class="head"><span class="no">05</span><h2>Then the observer joins the system</h2></div>
+  <p>The first wave of cybernetics studied systems from outside, like an engineer with a clipboard. From the 1970s, second-order cybernetics turned the lens around: whoever describes a system is part of what is being described. Three ideas carry most of it.</p>
+  <div class="cards">
+    <div class="card"><span class="by">Maturana and Varela, 1972</span><h3>Autopoiesis</h3><p>A living cell makes the very parts that make the cell. Its organization is a loop that produces itself. Their question was what separates a living system from a machine that merely does things.</p></div>
+    <div class="card"><span class="by">Heinz von Foerster, 1974</span><h3>Cybernetics of cybernetics</h3><p>A thermostat’s goal is set by someone. Look closer and the person adjusting it is inside a loop too (they feel cold, they adjust). There is no view from nowhere, so describe your own position as part of the model.</p></div>
+    <div class="card"><span class="by">Heinz von Foerster</span><h3>The ethical imperative</h3><p>“Act always so as to increase the number of choices.” A rule for anyone steering systems that contain people: keep options open instead of squeezing the variety out of others.</p></div>
+  </div>
+</section>
+
+<!-- 6 -->
+<section id="cases">
+  <div class="head"><span class="no">06</span><h2>Case files</h2></div>
+  <p>Eight real systems, each taken apart into the same four parts. Filter by where they live.</p>
+  <div class="chips" id="casefilter" role="group" aria-label="Filter case files"></div>
+  <div class="casegrid" id="casegrid"></div>
+</section>
+
+<!-- 7 -->
+<section id="history">
+  <div class="head"><span class="no">07</span><h2>How the field unfolded</h2></div>
+  <ol class="tl" id="tl"></ol>
+</section>
+
+<section id="quiz">
+  <div class="head"><span class="no">Check</span><h2>Balancing or reinforcing?</h2></div>
+  <p>Decide which kind of loop dominates each situation.</p>
+  <div id="quizbox"></div>
+  <div class="score" id="score"></div>
+</section>
+
+<section id="read">
+  <div class="head"><span class="no">Next</span><h2>Where to go from here</h2></div>
+  <ul class="read">
+    <li><b>Norbert Wiener, <i>Cybernetics</i> (1948)</b> and the plainer <i>The Human Use of Human Beings</i> (1950). The founding text and its readable sequel.</li>
+    <li><b>W. Ross Ashby, <i>An Introduction to Cybernetics</i> (1956).</b> Clear, careful, and covers requisite variety. Many readers start here.</li>
+    <li><b>Stafford Beer, <i>Brain of the Firm</i> (1972).</b> The Viable System Model written for managers.</li>
+    <li><b>Donella Meadows, <i>Thinking in Systems</i> (2008).</b> The friendliest modern route into loops, stocks and delays.</li>
+    <li><b>Maturana and Varela, <i>Autopoiesis and Cognition</i> (1980).</b> For the second-order side. Dense but rewarding.</li>
+    <li><b>Eden Medina, <i>Cybernetic Revolutionaries</i> (2011).</b> A well-researched history of Cybersyn.</li>
+  </ul>
+  <footer>The models on this page are teaching simplifications. They are meant to show the shape of each idea, not to predict any real room, economy or market.</footer>
+</section>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+function $(id){return document.getElementById(id)}
+function cssv(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim()}
+function clamp(x,a,b){return Math.max(a,Math.min(b,x))}
+function fmt(x,d){return Number(x).toFixed(d==null?1:d)}
+
+/* ---------- nav ---------- */
+var sections=[["top","Start"],["balance","Balancing"],["reinforce","Reinforcing"],["variety","Variety"],["viable","Viable systems"],["observer","The observer"],["cases","Case files"],["history","History"],["quiz","Check"],["read","Reading"]];
+var navrow=$("navrow");
+sections.forEach(function(s){
+  var a=document.createElement("a");a.href="#"+s[0];a.textContent=s[1];a.dataset.t=s[0];
+  a.addEventListener("click",function(e){e.preventDefault();var el=$(s[0]);if(el)el.scrollIntoView({behavior:"smooth",block:"start"})});
+  navrow.appendChild(a);
+});
+function markNav(){
+  var cur="top";
+  sections.forEach(function(s){var el=$(s[0]);if(el&&el.getBoundingClientRect().top<140)cur=s[0]});
+  Array.prototype.forEach.call(navrow.children,function(a){a.classList.toggle("on",a.dataset.t===cur)});
+}
+window.addEventListener("scroll",markNav,{passive:true});markNav();
+
+/* ---------- hero loop ---------- */
+var EX={
+  thermostat:{n:"Thermostat",goal:"21 °C on the dial",sense:"A thermistor reads the room",compare:"Error = 21 − reading",decide:"Relay: heat on below 20.5, off above 21.5",act:"The furnace burns fuel",world:"Room warms. An open window pulls it back."},
+  body:{n:"Body temperature",goal:"About 37 °C, set by the hypothalamus",sense:"Thermoreceptors in skin and brain",compare:"Hypothalamus compares reading to set point",decide:"Brain chooses: shiver, sweat or narrow vessels",act:"Muscles, sweat glands, blood vessels",world:"Core temperature shifts. Wind or infection disturbs it."},
+  cruise:{n:"Cruise control",goal:"100 km/h chosen by the driver",sense:"Wheel-speed sensors",compare:"Speed error, many times a second",decide:"PID law sets the throttle",act:"Throttle actuator",world:"Car speeds up. A hill disturbs it."},
+  cybersyn:{n:"Cybersyn (Chile, 1971–73)",goal:"Production targets for each factory",sense:"Daily telex reports of output and stock",compare:"Statistical filter flags numbers outside the expected band",decide:"Managers and the control room choose an intervention",act:"Advice, resources and directives to factories",world:"The economy responds. Strikes and shortages disturb it."}
+};
+var ROLES=[["goal","Goal","input"],["sense","Sense","1"],["compare","Compare","2"],["decide","Decide","3"],["act","Act","4"],["world","World","5"]];
+var exKey="thermostat",stationEls=[];
+(function(){
+  var chips=$("exchips"),st=$("stations");
+  ROLES.forEach(function(r){
+    var d=document.createElement("div");d.className="st"+(r[0]==="goal"?" goal":"")+(r[0]==="world"?" world":"");
+    d.innerHTML='<div class="role"><span>'+r[1]+'</span><b>'+r[2]+'</b></div><div class="val"></div>';
+    st.appendChild(d);stationEls.push(d);
+  });
+  Object.keys(EX).forEach(function(k){
+    var b=document.createElement("button");b.className="chip";b.textContent=EX[k].n;b.setAttribute("aria-pressed",k===exKey?"true":"false");
+    b.addEventListener("click",function(){exKey=k;Array.prototype.forEach.call(chips.children,function(c){c.setAttribute("aria-pressed",c===b?"true":"false")});fillStations()});
+    chips.appendChild(b);
+  });
+  function fillStations(){ROLES.forEach(function(r,i){stationEls[i].querySelector(".val").textContent=EX[exKey][r[0]]})}
+  fillStations();
+  var step=1;
+  function pulse(){
+    stationEls.forEach(function(e,i){e.classList.toggle("on",i===step)});
+    step=step>=5?1:step+1;
+  }
+  pulse();
+  if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches){setInterval(pulse,1400)}
+})();
+
+/* ---------- canvas chart ---------- */
+function setupCanvas(c){
+  var dpr=window.devicePixelRatio||1,w=c.clientWidth,h=c.clientHeight;
+  var pw=Math.round(w*dpr),ph=Math.round(h*dpr);
+  if(c.width!==pw||c.height!==ph){c.width=pw;c.height=ph}
+  var ctx=c.getContext("2d");ctx.setTransform(dpr,0,0,dpr,0,0);return{ctx:ctx,w:w,h:h};
+}
+function drawChart(c,o){
+  var s=setupCanvas(c),ctx=s.ctx,w=s.w,h=s.h;ctx.clearRect(0,0,w,h);
+  var m={l:42,r:14,t:12,b:34},pw=w-m.l-m.r,ph=h-m.t-m.b;
+  function X(x){return m.l+x/o.xmax*pw}
+  function Y(y){return m.t+ph-(y-o.ymin)/(o.ymax-o.ymin)*ph}
+  var line=cssv("--line"),muted=cssv("--muted");
+  ctx.font='11px "IBM Plex Mono",ui-monospace,monospace';ctx.textBaseline="middle";
+  ctx.lineWidth=1;ctx.strokeStyle=line;ctx.fillStyle=muted;
+  o.yticks.forEach(function(v){
+    ctx.beginPath();ctx.moveTo(m.l,Y(v)+.5);ctx.lineTo(m.l+pw,Y(v)+.5);ctx.stroke();
+    ctx.textAlign="right";ctx.fillText(String(v),m.l-6,Y(v));
+  });
+  ctx.textAlign="center";
+  for(var v=0;v<=o.xmax+1e-9;v+=o.xstep){ctx.fillText(String(v),X(v),m.t+ph+12)}
+  ctx.fillText(o.xlabel,m.l+pw/2,h-6);
+  if(o.band){
+    ctx.fillStyle=cssv("--err-soft");ctx.globalAlpha=.7;
+    ctx.fillRect(X(o.band[0]),m.t,X(o.band[1])-X(o.band[0]),ph);ctx.globalAlpha=1;
+    ctx.fillStyle=muted;ctx.textAlign="center";ctx.fillText(o.band[2],(X(o.band[0])+X(o.band[1]))/2,m.t+9);
+  }
+  ctx.save();ctx.beginPath();ctx.rect(m.l,m.t,pw,ph);ctx.clip();
+  var rev=o.reveal==null?1:o.reveal;
+  o.series.forEach(function(se){
+    ctx.beginPath();var started=false;
+    se.data.forEach(function(p){
+      if(p[0]>rev*o.xmax)return;
+      var px=X(p[0]),py=Y(clamp(p[1],o.ymin-5,o.ymax+5));
+      if(!started){ctx.moveTo(px,py);started=true}else ctx.lineTo(px,py);
+    });
+    if(se.fill&&started){
+      var last=se.data.filter(function(p){return p[0]<=rev*o.xmax}).pop();
+      ctx.lineTo(X(last[0]),Y(o.ymin));ctx.lineTo(X(0),Y(o.ymin));ctx.closePath();
+      ctx.globalAlpha=.22;ctx.fillStyle=cssv(se.color);ctx.fill();ctx.globalAlpha=1;
+      ctx.beginPath();started=false;
+      se.data.forEach(function(p){if(p[0]>rev*o.xmax)return;var px=X(p[0]),py=Y(p[1]);if(!started){ctx.moveTo(px,py);started=true}else ctx.lineTo(px,py)});
+    }
+    ctx.setLineDash(se.dash||[]);ctx.lineWidth=se.width||2;ctx.strokeStyle=cssv(se.color);ctx.lineJoin="round";ctx.stroke();ctx.setLineDash([]);
+  });
+  ctx.restore();
+}
+
+/* ---------- lab 1: balancing ---------- */
+var P1=[
+  {n:"Calm thermostat",sp:21,gain:.6,delay:0,out:5},
+  {n:"Sluggish",sp:21,gain:.15,delay:0,out:5},
+  {n:"Heavy-handed",sp:21,gain:3,delay:0,out:5},
+  {n:"Laggy shower",sp:21,gain:1.6,delay:6,out:5}
+];
+var reveal1=1,anim1=null;
+function sim1(p,win){
+  var dt=.25,N=Math.round(120/dt),T=[p.out],U=[],dS=Math.round(p.delay/dt);
+  for(var i=0;i<=N;i++){
+    var t=i*dt,meas=i-dS>=0?T[i-dS]:T[0];
+    var u=clamp(p.gain*(p.sp-meas),0,1);
+    var k=(win&&t>=60&&t<80)?.1:.05;
+    U.push(u);T.push(T[i]+(-k*(T[i]-p.out)+1.5*u)*dt);
+  }
+  return{T:T,U:U,dt:dt};
+}
+function run1(){
+  var p={sp:+$("sp").value,gain:+$("gain").value,delay:+$("delay").value,out:+$("out").value},win=$("win").checked;
+  $("v1sp").textContent=fmt(p.sp)+" °C";$("v1g").textContent=fmt(p.gain);$("v1d").textContent=fmt(p.delay)+" min";$("v1o").textContent=p.out+" °C";
+  var r=sim1(p,win),tl=[],ul=[],ol=[],gl=[];
+  for(var i=0;i<=480;i++){var t=i*r.dt;tl.push([t,r.T[i]]);ul.push([t,-10+r.U[i]*9]);}
+  ol=[[0,p.out],[120,p.out]];gl=[[0,p.sp],[120,p.sp]];
+  var o={xmax:120,xstep:20,ymin:-10,ymax:30,yticks:[0,10,20,30],xlabel:"minutes",reveal:reveal1,
+    series:[{data:ol,color:"--muted",dash:[3,4],width:1.5},{data:gl,color:"--sig",dash:[6,4],width:1.5},{data:ul,color:"--err",fill:true,width:1.5},{data:tl,color:"--loop",width:2.5}]};
+  if(win)o.band=[60,80,"window open"];
+  drawChart($("c1"),o);
+  /* verdict over the last stretch before any disturbance, or the end of the run */
+  var a=Math.round(30/r.dt),b=Math.round((win?58:118)/r.dt),mn=1e9,mx=-1e9,sum=0,n=0;
+  for(var j=a;j<=b;j++){mn=Math.min(mn,r.T[j]);mx=Math.max(mx,r.T[j]);sum+=r.T[j];n++}
+  var mean=sum/n,peak=Math.max.apply(null,r.T),off=mean-p.sp,v=$("verdict1");
+  var msg,cls;
+  if(mx-mn>.8){msg="<b>Hunting.</b> The room never settles: it swings between "+fmt(mn)+" and "+fmt(mx)+" °C. The controller keeps correcting old news.";cls="bad"}
+  else if(peak>p.sp+1){msg="<b>Overshoots.</b> Peak "+fmt(peak)+" °C before settling near "+fmt(mean)+" °C.";cls="bad"}
+  else if(Math.abs(off)>.7){msg="<b>Settles, but off target.</b> It parks "+fmt(Math.abs(off))+" °C "+(off<0?"below":"above")+" the goal. A reaction proportional to the error needs some error to keep the heater on. Raise the gain to shrink the gap.";cls=""}
+  else{msg="<b>Settles close to the goal</b> (within "+fmt(Math.abs(off))+" °C) without swinging.";cls="good"}
+  if(win&&!(mx-mn>.8)){var dip=1e9;for(var q=Math.round(60/r.dt);q<=Math.round(85/r.dt);q++)dip=Math.min(dip,r.T[q]);msg+=" With the window open the room drops to "+fmt(dip)+" °C: the heater is already near full power, so a disturbance can exceed what the regulator can do.";}
+  v.className="verdict "+cls;v.innerHTML=msg;
+}
+function replay1(){
+  if(anim1)cancelAnimationFrame(anim1);
+  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches){reveal1=1;run1();return}
+  var t0=null;reveal1=0;
+  function f(ts){if(t0==null)t0=ts;reveal1=clamp((ts-t0)/3500,0,1);run1();if(reveal1<1)anim1=requestAnimationFrame(f)}
+  anim1=requestAnimationFrame(f);
+}
+(function(){
+  var box=$("p1");
+  P1.forEach(function(p,i){
+    var b=document.createElement("button");b.className="chip";b.textContent=p.n;b.setAttribute("aria-pressed",i===0?"true":"false");
+    b.addEventListener("click",function(){
+      $("sp").value=p.sp;$("gain").value=p.gain;$("delay").value=p.delay;$("out").value=p.out;
+      Array.prototype.forEach.call(box.children,function(c){c.setAttribute("aria-pressed",c===b?"true":"false")});
+      reveal1=1;run1();
+    });box.appendChild(b);
+  });
+  ["sp","gain","delay","out","win"].forEach(function(id){$(id).addEventListener("input",function(){
+    Array.prototype.forEach.call(box.children,function(c){c.setAttribute("aria-pressed","false")});reveal1=1;run1()})});
+  $("replay1").addEventListener("click",replay1);
+})();
+
+/* ---------- lab 2: reinforcing ---------- */
+var P2=[
+  {n:"Viral post",r:.5,x0:.5,u:"hours"},
+  {n:"Bank run",r:.65,x0:1,u:"hours"},
+  {n:"Savings at 7%",r:.07,x0:5,u:"years"},
+  {n:"Slow burn",r:.12,x0:1,u:"time units"}
+];
+function run2(){
+  var r=+$("rate").value,x0=+$("x0").value,lim=$("lim").checked,u=run2.u||"time units",K=100;
+  $("v2r").textContent=fmt(r,2);$("v2x").textContent=fmt(x0);
+  var ex=[],lg=[];
+  for(var i=0;i<=300;i++){var t=i*.1;ex.push([t,x0*Math.exp(r*t)]);lg.push([t,K/(1+((K-x0)/x0)*Math.exp(-r*t))])}
+  var main=lim?lg:ex,ghost=lim?ex:lg;
+  drawChart($("c2"),{xmax:30,xstep:5,ymin:0,ymax:100,yticks:[0,25,50,75,100],xlabel:u,
+    series:[{data:ghost,color:lim?"--err":"--loop",dash:[5,4],width:1.5},{data:main,color:lim?"--loop":"--err",width:2.5}]});
+  $("l2a").textContent=lim?"With limit":"Without limit";$("l2b").textContent=lim?"Without limit (clipped at the top)":"With limit";
+  var dbl=Math.LN2/r,tEx=Math.log(K/x0)/r,t90=Math.log(90*(K-x0)/(x0*10))/r;
+  var m="<b>Doubles every "+fmt(dbl)+" "+u+".</b> ";
+  m+=tEx<=30?"Unchecked, it passes 100 after about "+fmt(tEx)+". ":"Unchecked, it would not reach 100 within the 30 shown. ";
+  m+=t90<=30?"With a limit it reaches 90 near "+fmt(t90)+" and then flattens.":"With a limit it is still in its early, almost exponential phase at 30.";
+  $("verdict2").innerHTML=m;
+}
+(function(){
+  var box=$("p2");
+  P2.forEach(function(p,i){
+    var b=document.createElement("button");b.className="chip";b.textContent=p.n;b.setAttribute("aria-pressed",i===0?"true":"false");
+    b.addEventListener("click",function(){
+      $("rate").value=p.r;$("x0").value=p.x0;run2.u=p.u;
+      Array.prototype.forEach.call(box.children,function(c){c.setAttribute("aria-pressed",c===b?"true":"false")});run2();
+    });box.appendChild(b);
+  });
+  run2.u="hours";
+  $("rate").value=P2[0].r;$("x0").value=P2[0].x0;
+  ["rate","x0","lim"].forEach(function(id){$(id).addEventListener("input",function(){
+    Array.prototype.forEach.call(box.children,function(c){c.setAttribute("aria-pressed","false")});run2()})});
+})();
+
+/* ---------- lab 3: variety ---------- */
+var counts3=null;
+function roll3(){
+  var D=+$("D").value,R=+$("R").value,tri=$("triage").checked,N=300;
+  var groups=tri?Math.ceil(D/2):D,cover=Math.min(R,groups),c=[];
+  for(var i=0;i<D;i++)c.push(0);
+  for(var k=0;k<N;k++){c[Math.floor(Math.random()*D)]++}
+  counts3=c;draw3();
+}
+function draw3(){
+  var D=+$("D").value,R=+$("R").value,tri=$("triage").checked;
+  $("v3d").textContent=D;$("v3r").textContent=R;
+  if(!counts3||counts3.length!==D){roll3();return}
+  var groups=tri?Math.ceil(D/2):D,cover=Math.min(R,groups),mx=Math.max.apply(null,counts3),box=$("bars"),ok=0,tot=0;
+  box.innerHTML="";
+  counts3.forEach(function(n,i){
+    var g=tri?Math.floor(i/2):i,handled=g<cover;tot+=n;if(handled)ok+=n;
+    var b=document.createElement("div");b.className="bar"+(handled?"":" miss");
+    b.innerHTML='<span class="col" style="height:'+Math.max(2,n/mx*120)+'px"></span><span>'+(i+1)+'</span>';
+    b.title="Disturbance "+(i+1)+": "+n+" times, "+(handled?"absorbed":"got through");box.appendChild(b);
+  });
+  var law=Math.min(1,cover/groups),v=$("verdict3");
+  v.className="verdict "+(law>=1?"good":"bad");
+  v.innerHTML="<b>"+ok+" of "+tot+" absorbed ("+Math.round(ok/tot*100)+"%).</b> "+
+    (law>=1?"The regulator has at least as many responses as there are kinds of trouble"+(tri?" after triage":"")+", so nothing gets through.":
+    "With "+R+" responses against "+groups+" distinct "+(tri?"groups":"disturbances")+", the best any strategy can do is cover about "+Math.round(law*100)+"% of the cases. Add responses"+(tri?"":" or tick triage")+" to close the gap.");
+}
+["D","R","triage"].forEach(function(id){$(id).addEventListener("input",function(){if(id==="D")counts3=null;draw3()})});
+$("roll3").addEventListener("click",roll3);
+
+/* ---------- VSM ---------- */
+var VSM={
+  s1:{t:"System 1: Operations",role:"The parts that do the actual work: a factory line, a ward, a shop, a squad. Each one is a viable system in its own right, with its own five functions.",ex:"In Cybersyn, each state-run factory was a System 1 unit, reporting its own numbers.",ask:"Which units create value for the outside world, and can each one run itself day to day?"},
+  s2:{t:"System 2: Coordination",role:"Keeps the operating units from oscillating against each other. It damps conflict through shared schedules, standards and protocols, and asks nobody to be in charge.",ex:"Timetables, shared calendars, common data formats and the rules of the road are all System 2.",ask:"What stops two teams from colliding without anyone having to escalate?"},
+  s3:{t:"System 3: Control",role:"Looks inside and at now. It allocates resources to the units, sets expectations, and manages the whole as more than the sum of its parts.",ex:"In Cybersyn, the statistical filter (called Cyberstride) flagged factories whose numbers left their expected band, so managers looked only at the exceptions.",ask:"Who decides where people and money go this quarter, and on what information?"},
+  s3s:{t:"System 3*: Audit",role:"A sporadic channel that goes around the normal reports to check what is really happening. It exists because units can only tell System 3 what they choose to tell it.",ex:"Surprise inspections, a manager walking the floor, financial audits and customer secret shoppers.",ask:"How would you find out if the dashboards were wrong?"},
+  s4:{t:"System 4: Intelligence",role:"Looks outside and ahead. It models the environment, watches for threats and opportunities, and proposes change.",ex:"Cybersyn included CHECO, a simulation tool meant to test economic choices before making them.",ask:"Who is paid to think about next year’s world instead of this week’s output?"},
+  s5:{t:"System 5: Policy",role:"Holds identity and purpose, and arbitrates between System 3 (stay efficient now) and System 4 (change for later). It is not the boss of everything. It is the balance point.",ex:"A board, a founding charter, a mission people refer to when two good goals conflict.",ask:"When today and tomorrow pull apart, who settles it, and by what principle?"}
+};
+function showVsm(id){
+  var d=VSM[id];
+  Array.prototype.forEach.call(document.querySelectorAll("svg.vsm .node"),function(n){n.classList.toggle("sel",n.dataset.id===id)});
+  $("vsmpanel").innerHTML="<h3>"+d.t+"</h3><p>"+d.role+"</p><span class='k'>Example</span><p>"+d.ex+"</p><span class='k'>Ask your own team</span><p>"+d.ask+"</p>";
+}
+Array.prototype.forEach.call(document.querySelectorAll("svg.vsm .node"),function(n){
+  n.addEventListener("click",function(){showVsm(n.dataset.id)});
+  n.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();showVsm(n.dataset.id)}});
+});
+showVsm("s3");
+
+/* ---------- case files ---------- */
+var CASES=[
+  {tag:"Machines",yr:"1788",n:"Watt’s flyball governor",goal:"A steady engine speed",sense:"Two weighted balls swing outward as the shaft spins faster",act:"The balls’ lift closes the steam valve through a linkage",catch:"Badly tuned governors hunted, speeding up and slowing down in waves. Maxwell’s 1868 paper “On Governors” explained when and why."},
+  {tag:"Machines",yr:"c. 1900",n:"The household thermostat",goal:"The temperature on the dial",sense:"A bimetal strip bends with heat, later a thermistor",act:"Switches the furnace on or off",catch:"Real thermostats add hysteresis, a deliberate gap between on and off points, so the furnace does not chatter on and off every few seconds."},
+  {tag:"Machines",yr:"1940–43",n:"Anti-aircraft fire control",goal:"A shell that meets the aircraft",sense:"Radar and optical tracking of the target",act:"Gun aiming computed ahead of the target",catch:"Wiener and Julian Bigelow worked on predicting where a pilot would be. The pilot and the gun became one feedback system, which pushed Wiener toward the general theory."},
+  {tag:"Machines",yr:"1950s on",n:"Cruise control",goal:"A speed set by the driver",sense:"Wheel-speed sensors",act:"Throttle actuator",catch:"Most use a PID law. P reacts to the present error, I to the error accumulated so far, D to how fast it is changing. Too much P or too much delay gives the hunting you saw in lesson 1."},
+  {tag:"Living",yr:"Evolved",n:"Body temperature",goal:"About 37 °C core",sense:"Thermoreceptors in skin and the hypothalamus",act:"Shivering, sweating, shifting blood flow",catch:"Claude Bernard called the stable inner environment the condition of a free life. Walter Cannon coined “homeostasis” in 1926. Fever is not failure: the set point is raised on purpose."},
+  {tag:"Living",yr:"1983",n:"Daisyworld",goal:"None built in",sense:"Daisies’ growth responds to local temperature",act:"White daisies cool, black daisies warm, by reflecting or absorbing light",catch:"James Lovelock and Andrew Watson’s toy planet holds a stable temperature over a range of solar brightness with no thermostat in it, only competing daisies. A small model of regulation emerging from life."},
+  {tag:"Society",yr:"1971–73",n:"Cybersyn in Chile",goal:"Production targets set with workers and managers",sense:"Telex reports from factories to Santiago",act:"A control room and a statistical alert system for managers",catch:"Beer insisted on managing by exception and on worker participation. Historians disagree about how much it actually changed decisions, and the 1973 coup ended it."},
+  {tag:"Society",yr:"Today",n:"Recommendation feeds",goal:"Whatever the platform optimizes, often time or clicks",sense:"What you tap, watch and skip",act:"Ranking what you see next",catch:"A reinforcing loop with you inside it: the system learns from your behavior while shaping that behavior. Second-order cybernetics in your pocket. No law of nature caps it, only design choices."}
+];
+var caseTag="All";
+function renderCases(){
+  var tags=["All","Machines","Living","Society"],f=$("casefilter");
+  if(!f.children.length){tags.forEach(function(t){var b=document.createElement("button");b.className="chip";b.textContent=t;b.setAttribute("aria-pressed",t==="All"?"true":"false");
+    b.addEventListener("click",function(){caseTag=t;Array.prototype.forEach.call(f.children,function(c){c.setAttribute("aria-pressed",c===b?"true":"false")});renderCases()});f.appendChild(b)})}
+  var g=$("casegrid");g.innerHTML="";
+  CASES.filter(function(c){return caseTag==="All"||c.tag===caseTag}).forEach(function(c){
+    var d=document.createElement("article");d.className="case";
+    d.innerHTML='<div><span class="yr">'+c.yr+' · '+c.tag+'</span><h3>'+c.n+'</h3></div><dl><dt>Goal</dt><dd>'+c.goal+'</dd><dt>Sensor</dt><dd>'+c.sense+'</dd><dt>Actuator</dt><dd>'+c.act+'</dd></dl><div class="catch">'+c.catch+'</div>';
+    g.appendChild(d);
+  });
+}
+renderCases();
+
+/* ---------- timeline ---------- */
+var TL=[
+  ["3rd century BCE","Ctesibius’s float regulator","Greek engineers use a float valve to keep a water clock’s flow steady. One of the earliest known feedback devices."],
+  ["1788","Watt’s centrifugal governor on the steam engine","Feedback control goes industrial."],
+  ["1868","Maxwell, “On Governors”","The first mathematical treatment of the stability of a feedback machine."],
+  ["1926","Cannon names homeostasis","Physiology gets its own word for self-regulation."],
+  ["1943","Rosenblueth, Wiener and Bigelow","“Behavior, Purpose and Teleology” argues that goal-directed behavior in machines and animals can be described with feedback."],
+  ["1946–53","The Macy Conferences","Mathematicians, biologists, anthropologists and psychologists meet repeatedly in New York to build a shared language."],
+  ["1948","Wiener, <i>Cybernetics</i>","The name enters the world. Claude Shannon’s information theory appears the same year."],
+  ["1952–56","Ashby: <i>Design for a Brain</i>, then <i>An Introduction to Cybernetics</i>","The law of requisite variety is stated clearly."],
+  ["1970","The Good Regulator Theorem","Conant and Ashby: every good regulator of a system must be a model of that system."],
+  ["1971–73","Cybersyn","Beer’s cybernetic management experiment in Chile."],
+  ["1972","Maturana and Varela on autopoiesis","The living cell as a system that produces itself."],
+  ["1974","Von Foerster, “Cybernetics of Cybernetics”","The observer enters the model: second-order cybernetics."]
+];
+(function(){var ol=$("tl");TL.forEach(function(t){var li=document.createElement("li");li.innerHTML='<span class="y">'+t[0]+'</span><b>'+t[1]+'</b><span>'+t[2]+'</span>';ol.appendChild(li)})})();
+
+/* ---------- quiz ---------- */
+var QZ=[
+  {q:"Cruise control holds a car at 100 km/h as the road tilts up and down.",a:"B",why:"Any gap between actual and set speed triggers a correction that shrinks the gap. That is a balancing loop."},
+  {q:"A post is shown to more people because it is already getting reactions, which earns it more reactions.",a:"R",why:"Output (reactions) feeds the input (reach). More leads to more, until attention runs out."},
+  {q:"You are cold, so you shiver, which makes heat, which warms you.",a:"B",why:"The deviation from 37 °C triggers an action that removes the deviation."},
+  {q:"Unpaid debt accrues interest, and the larger balance accrues more interest.",a:"R",why:"The growth is proportional to the current size. Only default, repayment or a cap can break the loop."},
+  {q:"More foxes mean fewer rabbits, and fewer rabbits mean fewer foxes a season later.",a:"B",why:"Each population pushes back on the other. The delay is why such systems often swing in waves instead of settling."}
+];
+var qs=0,qa=0;
+(function(){
+  var box=$("quizbox");
+  QZ.forEach(function(q,i){
+    var d=document.createElement("div");d.className="q";
+    d.innerHTML='<p><b>'+(i+1)+'.</b> '+q.q+'</p><div class="opts"><button class="chip" data-a="B">Balancing</button><button class="chip" data-a="R">Reinforcing</button></div>';
+    var done=false;
+    Array.prototype.forEach.call(d.querySelectorAll("button"),function(b){
+      b.addEventListener("click",function(){
+        if(done)return;done=true;qa++;var ok=b.dataset.a===q.a;if(ok)qs++;
+        b.setAttribute("aria-pressed","true");
+        var w=document.createElement("div");w.className="why "+(ok?"ok":"no");
+        w.textContent=(ok?"Right. ":"Not quite. This one is "+(q.a==="B"?"balancing. ":"reinforcing. "))+q.why;d.appendChild(w);
+        $("score").textContent=qs+" of "+qa+" answered correctly"+(qa===QZ.length?". Done.":"");
+      });
+    });
+    box.appendChild(d);
+  });
+})();
+
+/* ---------- redraw hooks ---------- */
+function redraw(){run1();run2();}
+var rt=null;
+window.addEventListener("resize",function(){clearTimeout(rt);rt=setTimeout(redraw,80)});
+try{window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",redraw)}catch(e){}
+try{new MutationObserver(redraw).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]})}catch(e){}
+$("D").value=12;$("R").value=4;
+run1();run2();roll3();
+})();
+</script>
+</html>
