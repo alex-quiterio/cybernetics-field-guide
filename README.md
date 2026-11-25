@@ -1,6 +1,6 @@
 # Cybernetics Field Guide
 
-A multi-page, interactive introduction to cybernetics with working models, challenges, tools and real case studies. Static site: no build step, no dependencies. Open `index.html` in a browser, or use the GitHub Pages site.
+A multi-page, interactive introduction to cybernetics with working models, challenges, tools and real case studies. Static site: no build step, no dependencies. Open `index.html` in a browser, or use the [GitHub Pages site](https://alex-quiterio.github.io/cybernetics-field-guide).
 
 | Page | What is on it |
 | --- | --- |
