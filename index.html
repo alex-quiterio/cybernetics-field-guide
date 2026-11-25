@@ -166,6 +166,19 @@ table.orders tr:last-child td,table.orders tr:last-child th{border-bottom:0}
 .lens .col{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:.9rem 1rem}
 .lens .col h3{font-size:.95rem;margin-bottom:.4rem;color:var(--loop)}
 .lens .col p{margin:0;font-size:.92rem}
+.srch{width:100%;max-width:420px;padding:.5rem .8rem;border:1px solid var(--line);border-radius:6px;background:var(--surface);margin:.8rem 0 .6rem}
+.gloss{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:.8rem;margin-top:1rem}
+.term{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:.85rem 1rem}
+.term h3{font-size:1.02rem;margin-bottom:.25rem}
+.term .tag{font-family:var(--mono);font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;color:var(--loop)}
+.term p{margin:.3rem 0 0;font-size:.9rem}
+.term .src{font-family:var(--mono);font-size:.75rem;color:var(--muted);margin-top:.4rem;display:block}
+.nores{color:var(--muted);margin-top:1rem}
+.people{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;margin-top:1.2rem}
+.person{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.45rem}
+.person .yrs{font-family:var(--mono);font-size:.78rem;color:var(--loop)}
+.person p{margin:0;font-size:.92rem}
+.person .read1{font-size:.85rem;color:var(--muted);border-top:1px solid var(--line);padding-top:.5rem;margin-top:auto}
 .read{display:grid;gap:.8rem;margin-top:1rem;padding:0;list-style:none}
 .read li{padding:.7rem 1rem;background:var(--surface);border:1px solid var(--line);border-radius:8px;font-size:.94rem}
 .read b{font-weight:600}
@@ -180,7 +193,7 @@ footer{margin-top:3rem;color:var(--muted);font-size:.85rem}
 <header class="hero" id="top">
   <div class="eyebrow">A guided tour with working models</div>
   <h1>Cybernetics Field Guide</h1>
-  <p class="lede">Cybernetics asks how anything, a thermostat, a cell or a government, keeps itself on course while the world pushes back. Eight short lessons, each with a model you can change and a real case behind it.</p>
+  <p class="lede">Cybernetics asks how anything, a thermostat, a cell or a government, keeps itself on course while the world pushes back. Eleven short lessons, each with a model you can change and a real case behind it.</p>
   <p class="ety">κυβερνήτης (<i>kybernetes</i>) = steersman. Latin turned it into <i>gubernator</i>, and from there we get “governor” and “govern”.</p>
 
   <div style="margin-top:2rem">
@@ -266,9 +279,33 @@ footer{margin-top:3rem;color:var(--muted);font-size:.85rem}
   </div>
 </section>
 
+<!-- 4u -->
+<section id="ultra">
+  <div class="head"><span class="no">04</span><h2>Ultrastability: a system that rewires itself</h2></div>
+  <div class="two">
+    <div>
+      <p>A thermostat holds a goal but cannot change its own rules. Ashby asked how a system could keep its <b>essential variables</b> (the ones it must hold within limits to survive) inside bounds even when the world changes the rules. His answer was <b>ultrastability</b>: a second loop that watches the essential variables and, when they leave their limits, changes the parameters of the first loop at random, until stability returns.</p>
+      <p>Ashby built the idea as a machine. His Homeostat, completed on 16 March 1948 at Barnwood House Hospital, used four linked units and found stable settings by itself. Wiener called it “one of the great philosophical contributions of the present day”, according to a historical account of the 1952 Macy conference.</p>
+      <p>The model on the right is a one-variable cartoon of the principle, not a replica of the Homeostat. The variable must stay within ±1. When it escapes, the system re-rolls its own setting <i>k</i>. Flip the wiring halfway and watch it find a new working setting without being told how.</p>
+      <div class="ex"><b>Real example</b><p>A person who moves to a new country finds old habits stop working. Nothing tells them the right new habits. They vary behavior until what they need to keep steady (sleep, money, belonging) stays in range again. Bateson’s Learning II (lesson 7) is the same move at the level of habits.</p></div>
+    </div>
+    <div class="lab">
+      <div class="ctl">
+        <label><span class="line"><span>Random kicks from the environment</span><span class="v" id="v4n"></span></span><input type="range" id="noise" min="0" max="0.8" step="0.05" value="0.2"></label>
+        <label><span><input type="checkbox" id="flip" checked>Flip the wiring at t = 30 (the old setting now makes things worse)</span></label>
+      </div>
+      <div style="height:.9rem"></div>
+      <canvas id="c4" role="img" aria-label="A variable that must stay between minus one and one, with the system re-rolling its own setting when it escapes"></canvas>
+      <div class="legend"><span><i style="border-color:var(--loop)"></i>Essential variable x</span><span><i class="dash" style="border-color:var(--err)"></i>Limits ±1 and re-rolls</span><span><i style="border-color:var(--sig)"></i>Its current setting k (scaled)</span></div>
+      <div class="verdict" id="verdict4"></div>
+      <div style="margin-top:.8rem"><button class="btn ghost" id="again4">Run again with new luck</button></div>
+    </div>
+  </div>
+</section>
+
 <!-- 4 -->
 <section id="viable">
-  <div class="head"><span class="no">04</span><h2>A viable organization is loops inside loops</h2></div>
+  <div class="head"><span class="no">05</span><h2>A viable organization is loops inside loops</h2></div>
   <div class="two">
     <div>
       <p>Stafford Beer asked what any organization needs in order to survive, whether a firm, a hospital or a country. His Viable System Model says five functions are enough, and each operating unit must itself contain all five. That recursion is the point.</p>
@@ -303,7 +340,7 @@ footer{margin-top:3rem;color:var(--muted);font-size:.85rem}
 
 <!-- 5 -->
 <section id="observer">
-  <div class="head"><span class="no">05</span><h2>First, second and third order</h2></div>
+  <div class="head"><span class="no">06</span><h2>First, second and third order</h2></div>
   <p>“Order” says where the observer stands. Each order takes the one before it and asks who is doing the observing. The first two are standard. The third is a live argument.</p>
 
   <h3 style="margin-top:1.5rem">First order: the cybernetics of observed systems</h3>
@@ -343,7 +380,7 @@ footer{margin-top:3rem;color:var(--muted);font-size:.85rem}
 
 <!-- 6 -->
 <section id="bateson">
-  <div class="head"><span class="no">06</span><h2>Gregory Bateson: the mind as a loop</h2></div>
+  <div class="head"><span class="no">07</span><h2>Gregory Bateson: the mind as a loop</h2></div>
   <p>Bateson (1904–1980) trained as an anthropologist and attended the Macy conferences alongside Margaret Mead. He carried cybernetics out of engineering and into psychiatry, learning, culture and ecology. He is hard to place on a timeline of orders because his work runs through all of them: he used feedback to explain behavior, and he insisted that the person describing a system is inside it.</p>
   <div class="cards">
     <div class="card"><span class="by">“Form, Substance and Difference,” 1970</span><h3>Information is a difference</h3><p>In this lecture to the Institute of General Semantics, later collected in <i>Steps to an Ecology of Mind</i> (1972), he defines the elementary unit of information as “a difference which makes a difference.” A thermostat does not respond to heat itself but to the difference between its reading and its goal. Mind, for Bateson, is made of such differences moving around loops.</p></div>
@@ -354,9 +391,25 @@ footer{margin-top:3rem;color:var(--muted);font-size:.85rem}
   <p style="margin-top:1rem">Why he matters here: lesson 1 shows a loop that holds a goal. Bateson asks what changes the goal, what counts as a signal, and who punctuates the world into these signals. That is the bridge from first to second order.</p>
 </section>
 
+<!-- 8 -->
+<section id="atlas">
+  <div class="head"><span class="no">08</span><h2>Concept atlas</h2></div>
+  <p>Thirty-two terms you will meet in the literature, each with its origin where one is known. Search or filter.</p>
+  <input class="srch" id="gsearch" type="search" placeholder="Search terms, e.g. variety, loop, observer" aria-label="Search the concept atlas">
+  <div class="chips" id="gchips" role="group" aria-label="Filter concepts"></div>
+  <div class="gloss" id="gloss"></div>
+  <p class="nores" id="gnores" hidden>No term matches that search.</p>
+</section>
+
+<section id="people">
+  <div class="head"><span class="no">09</span><h2>Who to know</h2></div>
+  <p>Twelve people, with what each is known for and where to start reading. Dates and works are from the sources listed under Refs.</p>
+  <div class="people" id="peoplegrid"></div>
+</section>
+
 <!-- 7 -->
 <section id="cases">
-  <div class="head"><span class="no">07</span><h2>Case files</h2></div>
+  <div class="head"><span class="no">10</span><h2>Case files</h2></div>
   <p>Eight real systems, each taken apart into the same four parts. Filter by where they live.</p>
   <div class="chips" id="casefilter" role="group" aria-label="Filter case files"></div>
   <div class="casegrid" id="casegrid"></div>
@@ -364,7 +417,7 @@ footer{margin-top:3rem;color:var(--muted);font-size:.85rem}
 
 <!-- 7 -->
 <section id="history">
-  <div class="head"><span class="no">08</span><h2>How the field unfolded</h2></div>
+  <div class="head"><span class="no">11</span><h2>How the field unfolded</h2></div>
   <ol class="tl" id="tl"></ol>
 </section>
 
@@ -400,6 +453,11 @@ footer{margin-top:3rem;color:var(--muted);font-size:.85rem}
     <li><b>Cybersyn.</b> Eden Medina, <i>Cybernetic Revolutionaries</i> (MIT Press, 2011); <a href="https://www.cambridge.org/core/services/aop-cambridge-core/content/view/4CF75E30D22554152A5EFDC9740E3440/S0022216X06001179a.pdf/designing_freedom_regulating_a_nation_socialist_cybernetics_in_allendes_chile.pdf">“Designing Freedom, Regulating a Nation”</a> (<i>Journal of Latin American Studies</i>, 2006); <a href="https://thereader.mitpress.mit.edu/project-cybersyn-chiles-radical-experiment-in-cybernetic-socialism">MIT Press Reader on Project Cybersyn</a>; <a href="https://en.wikipedia.org/wiki/Project_Cybersyn">Project Cybersyn overview</a></li>
     <li><b>Primary texts read for the orders section.</b> <a href="https://uranos.ch/research/references/VonFoerster1992/ethics.pdf">Von Foerster, “Ethics and Second-Order Cybernetics”</a>; <a href="https://cpb-us-e1.wpmucdn.com/blogs.gwu.edu/dist/d/257/files/2016/11/2018-Umpleby-Lepskiy-Medvedeva-2f7teld.pdf">Umpleby, Lepskiy and Medvedeva (2018)</a>; <a href="https://www.emerald.com/insight/content/doi/10.1108/03684920410556007/full/pdf">Scott, “Second-order cybernetics: an historical introduction”</a> (<i>Kybernetes</i> 33(9/10), 2004)</li>
     <li><b>Second-order cybernetics.</b> <a href="https://www.asc-cybernetics.org/CofC/">American Society for Cybernetics history of “Cybernetics of Cybernetics”</a>; <a href="https://en.wikipedia.org/wiki/Second-order_cybernetics">overview</a>; von Foerster, <a href="https://pangaro.com/hciiseminar2019/Heinz_von_Foerster-Ethics_and_Second-order_Cybernetics.pdf">“Ethics and Second-Order Cybernetics”</a></li>
+    <li><b>Ashby and the Homeostat.</b> <a href="https://en.wikipedia.org/wiki/Homeostat">Homeostat overview</a>; <a href="https://archives.library.illinois.edu/?p=14051">University of Illinois Archives on Ashby</a></li>
+    <li><b>McCulloch and Pitts (1943).</b> <a href="https://www.doi.org/10.1007/BF02478259">DOI 10.1007/BF02478259</a></li>
+    <li><b>Beer’s concepts.</b> <a href="https://en.wikipedia.org/wiki/Stafford_Beer">Stafford Beer (POSIWID)</a>; <a href="https://metaphorum.org/wp-content/uploads/2022/09/Appendix-Diagnosing-the-System.pdf">Metaphorum appendix on attenuators and amplifiers</a></li>
+    <li><b>Pask.</b> <a href="https://users.sussex.ac.uk/~ezequiel/Husbands_08_Ch08_185-212.pdf">Husbands, chapter 8</a>; <a href="https://en.wikipedia.org/wiki/Gordon_Pask">Gordon Pask overview</a></li>
+    <li><b>Wiener’s book.</b> <a href="https://www.britannica.com/science/cybernetics">Britannica on cybernetics</a>; <a href="https://monoskop.org/Wiener">Monoskop bibliography</a></li>
     <li><b>Gregory Bateson.</b> <i>Steps to an Ecology of Mind</i> (1972; <a href="https://rauterberg.employee.id.tue.nl/lecturenotes/DDM110%20CAS/Bateson-1972%20Steps%20to%20an%20ecology%20of%20mind.pdf">scanned copy</a>); <a href="https://faculty.washington.edu/jernel/521/Form.htm">“Form, Substance and Difference”</a>; <a href="https://www.vordenker.de/vgo/logical-categories-of-learning.pdf">“The Logical Categories of Learning and Communication”</a></li>
     <li><b>Further on third order.</b> Yolles, <a href="https://www.mdpi.com/2079-8954/9/2/34">“Metacybernetics: Towards a General Theory of Higher Order Cybernetics”</a> (<i>Systems</i>, 2021); Umpleby, Lepskiy and Medvedeva, <a href="https://cpb-us-e1.wpmucdn.com/blogs.gwu.edu/dist/d/257/files/2016/11/2018-Umpleby-Lepskiy-Medvedeva-2f7teld.pdf">“Recent developments in cybernetics”</a> (2019)</li>
     <li><b>Daisyworld.</b> Watson and Lovelock, “Biological homeostasis of the global environment: the parable of Daisyworld,” <i>Tellus</i> 35B, 1983, pp. 284–289. <a href="https://www.jameslovelock.org/biological-homeostasis-of-the-global-environment-the-parable-of-daisyworld/">James Lovelock’s site</a></li>
@@ -424,7 +482,7 @@ function clamp(x,a,b){return Math.max(a,Math.min(b,x))}
 function fmt(x,d){return Number(x).toFixed(d==null?1:d)}
 
 /* ---------- nav ---------- */
-var sections=[["top","Start"],["balance","Balancing"],["reinforce","Reinforcing"],["variety","Variety"],["viable","Viable systems"],["observer","Orders"],["bateson","Bateson"],["cases","Case files"],["history","History"],["quiz","Check"],["read","Reading"],["sources","Sources"]];
+var sections=[["top","Start"],["balance","Balancing"],["reinforce","Reinforcing"],["variety","Variety"],["ultra","Ultrastability"],["viable","Viable systems"],["observer","Orders"],["bateson","Bateson"],["atlas","Concepts"],["people","People"],["cases","Case files"],["history","History"],["quiz","Check"],["read","Reading"],["sources","Sources"]];
 var navrow=$("navrow");
 sections.forEach(function(s){
   var a=document.createElement("a");a.href="#"+s[0];a.textContent=s[1];a.dataset.t=s[0];
@@ -498,6 +556,7 @@ function drawChart(c,o){
     ctx.fillStyle=muted;ctx.textAlign="center";ctx.fillText(o.band[2],(X(o.band[0])+X(o.band[1]))/2,m.t+9);
   }
   ctx.save();ctx.beginPath();ctx.rect(m.l,m.t,pw,ph);ctx.clip();
+  (o.vlines||[]).forEach(function(v){ctx.beginPath();ctx.setLineDash(v.dash||[3,3]);ctx.lineWidth=1.2;ctx.strokeStyle=cssv(v.color);ctx.moveTo(X(v.x)+.5,m.t);ctx.lineTo(X(v.x)+.5,m.t+ph);ctx.stroke();ctx.setLineDash([])});
   var rev=o.reveal==null?1:o.reveal;
   o.series.forEach(function(se){
     ctx.beginPath();var started=false;
@@ -701,6 +760,8 @@ var TL=[
   ["1943","Rosenblueth, Wiener and Bigelow","“Behavior, Purpose and Teleology” argues that goal-directed behavior in machines and animals can be described with feedback."],
   ["1946–53","The Macy Conferences","A series of ten closed, interdisciplinary meetings funded by the Josiah Macy Jr. Foundation, built around a shared language for feedback and communication."],
   ["1948","Wiener, <i>Cybernetics</i>","The name enters the world. Claude Shannon’s information theory appears the same year."],
+  ["1943","McCulloch and Pitts, “A Logical Calculus of the Ideas Immanent in Nervous Activity”","Neural activity described with propositional logic, a seminal paper for neural networks and automata theory."],
+  ["1948","Ashby completes the Homeostat","Finished on 16 March 1948: four linked units that find stable settings by changing their own parameters (ultrastability)."],
   ["1952–56","Ashby: <i>Design for a Brain</i>, then <i>An Introduction to Cybernetics</i>","The law of requisite variety is stated clearly."],
   ["1970","The Good Regulator Theorem","Conant and Ashby, <i>International Journal of Systems Science</i>: “every good regulator of a system must be a model of that system.” Later authors argue the proof supports a weaker claim than the title."],
   ["1971–73","Cybersyn","Beer’s cybernetic management experiment in Chile."],
@@ -761,14 +822,118 @@ var LENS={
   show(names[0]);
 })();
 
+/* ---------- lab 4: ultrastability ---------- */
+var seed4=7;
+function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function run4(){
+  var noise=+$("noise").value,flip=$("flip").checked,rnd=rng(seed4);
+  $("v4n").textContent=fmt(noise,2);
+  var dt=.1,N=600,x=.5,k=.8,sgn=1,xs=[],ks=[],rolls=[],last=0;
+  for(var i=0;i<=N;i++){
+    var t=i*dt;
+    if(flip&&Math.abs(t-30)<dt/2)sgn=-1;
+    x+=-sgn*k*x*dt+noise*(rnd()-.5)*Math.sqrt(dt)*2;
+    x=clamp(x,-1.3,1.3);
+    if(Math.abs(x)>1){k=(rnd()*4-2);rolls.push(t);last=t;x=clamp(x,-1.05,1.05)}
+    xs.push([t,x]);ks.push([t,k*.6]);
+  }
+  var vl=[{x:30,color:"--sig",dash:[6,4]}];
+  if(!flip)vl=[];
+  rolls.forEach(function(t){vl.push({x:t,color:"--err",dash:[2,3]})});
+  drawChart($("c4"),{xmax:60,xstep:10,ymin:-1.5,ymax:1.5,yticks:[-1,0,1],xlabel:"time",vlines:vl,
+    series:[{data:[[0,1],[60,1]],color:"--err",dash:[6,4],width:1.5},{data:[[0,-1],[60,-1]],color:"--err",dash:[6,4],width:1.5},{data:ks,color:"--sig",width:1.5},{data:xs,color:"--loop",width:2.5}]});
+  var v=$("verdict4");
+  var tail=xs.slice(Math.round(N*.8)).map(function(p){return Math.abs(p[1])}),mx=Math.max.apply(null,tail);
+  if(mx<=1&&last<50){v.className="verdict good";v.innerHTML="<b>Re-rolled its own setting "+rolls.length+" time"+(rolls.length===1?"":"s")+" and settled.</b> Its last change was at t = "+fmt(last)+"; after that the variable stays inside the limits."}
+  else{v.className="verdict bad";v.innerHTML="<b>Still searching.</b> "+rolls.length+" re-rolls so far and the variable keeps escaping. With heavy kicks, even a good setting cannot hold. Lower the kicks or run again."}
+}
+["noise","flip"].forEach(function(id){$(id).addEventListener("input",run4)});
+$("again4").addEventListener("click",function(){seed4=(seed4*31+17)%100003;run4()});
+
+/* ---------- concept atlas ---------- */
+var GL=[
+ ["Feedback","Loops","Part of a system’s output, or a measure of it, returns to its input, so the next action depends on the last result.","Wiener, 1948"],
+ ["Balancing (negative) feedback","Loops","Feedback that opposes deviation. The gap between goal and state shrinks. Thermostats, reflexes and cruise control are examples.","Lesson 1"],
+ ["Reinforcing (positive) feedback","Loops","Feedback that amplifies change, so more leads to more. “Positive” means it adds, not that the result is good.","Lesson 2"],
+ ["Circular causality","Loops","Cause and effect form a loop, so A shapes B and B shapes A. The Macy conferences were titled “Circular Causal and Feedback Mechanisms in Biological and Social Systems”.","Macy, 1946–53"],
+ ["Goal (set point, reference)","Regulation","The state a regulator tries to hold. In a thermostat it is the dial setting, in the body about 37 °C.",""],
+ ["Error","Regulation","The difference between goal and sensed state. Balancing loops act in proportion to it, which is why a purely proportional controller can settle slightly off target.","Lesson 1"],
+ ["Gain","Regulation","How strongly the controller responds to a given error. Too high, combined with delay, produces oscillation.","Lesson 1"],
+ ["Delay","Regulation","The lag between a change and its being sensed or acted on. Delay is why showers and economies overshoot.","Lesson 1"],
+ ["Hunting","Regulation","Persistent oscillation around a target caused by a loop that reacts too hard to stale information.","Maxwell, 1868"],
+ ["PID control","Regulation","A control law with a proportional term (present error), an integral term (accumulated error) and a derivative term (rate of change). Maxwell’s analysis of governors already involved an integral-of-error term.","Maxwell, 1868"],
+ ["Hysteresis","Regulation","A deliberate gap between on and off thresholds so a switching controller does not chatter.",""],
+ ["Servomechanism","Regulation","A control system in which sensed error drives an actuator to follow a command. Wiener’s wartime work belonged to this tradition.","WWII"],
+ ["Homeostasis","Regulation","Self-regulation that keeps internal conditions stable. Walter Cannon coined the word in 1926, building on Claude Bernard’s “milieu intérieur”.","Cannon, 1926"],
+ ["Teleology as feedback","Regulation","Rosenblueth, Wiener and Bigelow argued that purposeful behavior can be described as behavior controlled by feedback from the goal, without mystery.","1943"],
+ ["Information (Shannon)","Information","A measure of the reduction of uncertainty in a message, studied as a quantity that can be transmitted. Published in the Bell System Technical Journal in 1948.","Shannon, 1948"],
+ ["Information (Bateson)","Information","“A difference which makes a difference”: what matters is a distinction the receiver can act on, not the raw signal.","Bateson, 1970"],
+ ["Noise","Information","Anything in a channel that is not the message and degrades it. Feedback is one way to correct for it.",""],
+ ["Variety","Information","The number of distinguishable states a system can be in. The measure Ashby uses for both disturbances and responses.","Ashby, 1956"],
+ ["Law of requisite variety","Information","A regulator’s variety must at least match the variety of disturbances it faces. Often put as “only variety can absorb variety”.","Ashby, 1956"],
+ ["Black box","Information","A system studied only through its inputs and outputs, without opening it. Ashby treats the method in <i>An Introduction to Cybernetics</i>.","Ashby, 1956"],
+ ["Essential variables","Organization","The variables an organism or system must keep within limits to survive, such as body temperature or blood sugar.","Ashby"],
+ ["Ultrastability","Organization","A system that changes its own parameters when its essential variables leave their limits, until it finds a stable setting again.","Ashby, 1948"],
+ ["Good regulator theorem","Organization","Conant and Ashby’s result that a regulator that is both successful and simple must embody a model of what it regulates. Later authors say the title overstates what the proof shows.","1970"],
+ ["Viable System Model","Organization","Beer’s account of the five functions any viable organization needs, repeated at every level of recursion.","Beer, 1972"],
+ ["Attenuator and amplifier","Organization","In Beer’s work, devices that reduce the variety reaching a regulator (filters, triage) or increase the regulator’s variety (more options). Two ways to achieve requisite variety.","Beer"],
+ ["Algedonic signal","Organization","A bypass channel in the VSM that carries an urgent pain or pleasure signal straight to the level that can act on it, skipping the normal chain of reports.","Beer"],
+ ["POSIWID","Organization","“The purpose of a system is what it does.” Beer’s reminder that a system’s actual behavior, not its stated aim, shows its purpose.","Beer"],
+ ["Autopoiesis","Observer","A system that produces the components that produce the system, such as a living cell.","Maturana and Varela, 1972"],
+ ["Second-order cybernetics","Observer","The cybernetics of observing systems: the observer is included in the account.","von Foerster, 1974"],
+ ["Conversation theory","Observer","Pask’s account of how two participants come to share an understanding through a cybernetic, dialectical exchange.","Pask"],
+ ["Learning levels","Observer","Bateson’s hierarchy: Learning I corrects a choice within a set of alternatives, Learning II changes the set, Learning III changes the process of Learning II.","Bateson"],
+ ["Double bind","Observer","A pattern of contradictory messages at different logical levels with no way out and no way to comment on it. Proposed by Bateson’s Palo Alto group in 1956 as one contributor to schizophrenic communication; that clinical claim is contested.","Bateson, 1956"]
+];
+(function(){
+  var tags=["All","Loops","Regulation","Information","Organization","Observer"],cur="All",q="";
+  var chips=$("gchips"),grid=$("gloss"),no=$("gnores");
+  tags.forEach(function(t){var b=document.createElement("button");b.className="chip";b.textContent=t;b.setAttribute("aria-pressed",t==="All"?"true":"false");
+    b.addEventListener("click",function(){cur=t;Array.prototype.forEach.call(chips.children,function(c){c.setAttribute("aria-pressed",c===b?"true":"false")});render()});chips.appendChild(b)});
+  function render(){
+    grid.innerHTML="";var n=0;
+    GL.forEach(function(g){
+      if(cur!=="All"&&g[1]!==cur)return;
+      var hay=(g[0]+" "+g[2]+" "+g[3]).toLowerCase();if(q&&hay.indexOf(q)<0)return;
+      var d=document.createElement("article");d.className="term";
+      d.innerHTML='<span class="tag">'+g[1]+'</span><h3>'+g[0]+'</h3><p>'+g[2]+'</p>'+(g[3]?'<span class="src">'+g[3]+'</span>':'');
+      grid.appendChild(d);n++;
+    });
+    no.hidden=n>0;
+  }
+  $("gsearch").addEventListener("input",function(e){q=e.target.value.trim().toLowerCase();render()});
+  render();
+})();
+
+/* ---------- people ---------- */
+var PEOPLE=[
+ ["Norbert Wiener","1894–1964","Named the field in <i>Cybernetics: Or Control and Communication in the Animal and the Machine</i> (1948). Worked on anti-aircraft prediction with Julian Bigelow, and co-authored the 1943 paper that framed purpose as feedback.","<i>The Human Use of Human Beings</i> (1950)"],
+ ["Warren McCulloch","1898–1969","Neurophysiologist who chaired the Macy cybernetics conferences. With Walter Pitts wrote “A Logical Calculus of the Ideas Immanent in Nervous Activity” (1943), widely credited as a seminal paper for neural networks and automata theory.","The 1943 paper, <i>Bulletin of Mathematical Biophysics</i> 5"],
+ ["W. Ross Ashby","1903–1972","Psychiatrist and engineer. Completed the Homeostat in 1948, wrote <i>Design for a Brain</i> (1952) and <i>An Introduction to Cybernetics</i> (1956), which states the law of requisite variety.","<i>An Introduction to Cybernetics</i>"],
+ ["Gregory Bateson","1904–1980","Anthropologist at the Macy conferences. Information as “a difference which makes a difference”, levels of learning, the double bind, and an ecology of mind.","<i>Steps to an Ecology of Mind</i> (1972)"],
+ ["Margaret Mead","1901–1978","Anthropologist at the Macy conferences. Her 1967 address to the American Society for Cybernetics, published 1968, gave second-order cybernetics its phrase, “cybernetics of cybernetics”.","The ASC history page on “Cybernetics of Cybernetics”"],
+ ["Stafford Beer","1926–2002","Management cybernetician. The Viable System Model, <i>Brain of the Firm</i> (1972), and Project Cybersyn in Chile. Coined POSIWID.","<i>Brain of the Firm</i>"],
+ ["Heinz von Foerster","1911–2002","Edited the Macy conference proceedings, led the Biological Computer Laboratory at the University of Illinois, and drew the first- and second-order distinction.","“Ethics and Second-Order Cybernetics”"],
+ ["Gordon Pask","1928–1996","Built Musicolour (1953, with Robin McKinnon-Wood) and SAKI, a keyboard-skill trainer, then developed Conversation Theory.","Husbands’s chapter on Pask’s machines"],
+ ["Humberto Maturana and Francisco Varela","1928–2021 and 1946–2001","Neurobiologists who introduced autopoiesis as the organization of living systems.","<i>Autopoiesis and Cognition</i> (1980)"],
+ ["John von Neumann","1903–1957","Mathematician close to Wiener’s circle. Worked on self-reproducing automata and, per Arthur Burks, shared mutual influence with Wiener.","<i>Theory of Self-Reproducing Automata</i> (ed. Burks)"],
+ ["Claude Shannon","1916–2001","“A Mathematical Theory of Communication”, <i>Bell System Technical Journal</i> 27 (1948), the year of Wiener’s book.","The 1948 paper"],
+ ["Niklas Luhmann","1927–1998","Sociologist whose social systems theory Scott lists among the strands of second-order cybernetics.","Scott’s 2004 historical introduction"]
+];
+(function(){
+  var g=$("peoplegrid");
+  PEOPLE.forEach(function(p){var d=document.createElement("article");d.className="person";
+    d.innerHTML='<div><span class="yrs">'+p[1]+'</span><h3>'+p[0]+'</h3></div><p>'+p[2]+'</p><div class="read1">Start with: '+p[3]+'</div>';g.appendChild(d)});
+})();
+
 /* ---------- redraw hooks ---------- */
-function redraw(){run1();run2();}
+function redraw(){run1();run2();run4();}
 var rt=null;
 window.addEventListener("resize",function(){clearTimeout(rt);rt=setTimeout(redraw,80)});
 try{window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",redraw)}catch(e){}
 try{new MutationObserver(redraw).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]})}catch(e){}
 $("D").value=12;$("R").value=4;
-run1();run2();roll3();
+run1();run2();roll3();run4();
 })();
 </script>
 </html>
