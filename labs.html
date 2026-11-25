@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Labs · Cybernetics Field Guide</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="labs">
+<div class="wrap">
+<nav class="top" aria-label="Pages"><div class="row"><span class="brand">Cybernetics Field Guide</span><a href="index.html">Start</a><a href="labs.html" class="on" aria-current="page">Labs</a><a href="orders.html">Orders</a><a href="viable.html">Viable systems</a><a href="atlas.html">Atlas</a><a href="people.html">People</a><a href="cases.html">Cases</a><a href="check.html">Check</a></div></nav>
+<header class="phead"><div class="eyebrow">Module 1 of 7 · about 20 minutes</div><h1>Labs</h1><p class="lede">Four models you can push around. Each has a challenge that asks you to use what the model teaches.</p></header>
+<main>
+<div class="tabs" role="tablist"><button class="tab" role="tab" data-tab="balance" aria-selected="false">1 Balancing</button><button class="tab" role="tab" data-tab="reinforce" aria-selected="false">2 Reinforcing</button><button class="tab" role="tab" data-tab="variety" aria-selected="false">3 Variety</button><button class="tab" role="tab" data-tab="ultra" aria-selected="false">4 Ultrastability</button></div><div class="tabpanel" data-panel="balance" role="tabpanel" hidden><section data-sec="balance">
+  <div class="head"><span class="no">01</span><h2>Balancing feedback holds a course</h2></div>
+  <div class="two">
+    <div>
+      <p>A balancing (negative) loop pushes against change. The room is too cold, so the heater turns on. The room is warm enough, so it turns off. The size of the push depends on the gap between goal and reality.</p>
+      <p>Two knobs decide whether it behaves well. <b>Gain</b> is how hard the controller reacts to the gap. <b>Delay</b> is how old the controller’s information is. High gain plus delay is the classic recipe for hunting, the swing back and forth you know from a shower that is always too hot or too cold.</p>
+      <p>Try the presets, then open the window at minute 60 and watch what the controller can and cannot do.</p>
+      <div class="ex"><b>Real example</b><p>James Watt’s flyball governor (1788) used this exact loop to hold an engine at constant speed. In 1868 James Clerk Maxwell wrote the first mathematical analysis of why some governors hunt and others settle. Norbert Wiener took the field’s name from the Greek word that “governor” itself derives from.</p></div>
+    </div>
+    <div class="lab">
+      <div class="chips" id="p1" style="margin-bottom:1rem"></div>
+      <div class="ctl">
+        <label><span class="line"><span>Goal (setpoint)</span><span class="v" id="v1sp"></span></span><input type="range" id="sp" min="15" max="25" step="0.5" value="21"></label>
+        <label><span class="line"><span>Gain: how hard it reacts</span><span class="v" id="v1g"></span></span><input type="range" id="gain" min="0.1" max="3" step="0.1" value="0.6"></label>
+        <label><span class="line"><span>Delay: how stale the sensor is</span><span class="v" id="v1d"></span></span><input type="range" id="delay" min="0" max="10" step="0.5" value="0"></label>
+        <label><span class="line"><span>Outside temperature</span><span class="v" id="v1o"></span></span><input type="range" id="out" min="-5" max="15" step="1" value="5"></label>
+        <label><span><input type="checkbox" id="win">Open the window from minute 60 to 80</span></label>
+      </div>
+      <div style="height:.9rem"></div>
+      <canvas id="c1" role="img" aria-label="Room temperature over 120 minutes with heater output"></canvas>
+      <div class="legend"><span><i style="border-color:var(--loop)"></i>Room temperature</span><span><i class="dash" style="border-color:var(--sig)"></i>Goal</span><span><i class="dash" style="border-color:var(--muted)"></i>Outside</span><span><i style="border-color:var(--err)"></i>Heater output (bottom band)</span></div>
+      <div class="verdict" id="verdict1"></div>
+      <div style="margin-top:.8rem"><button class="btn ghost" id="replay1">Replay the run</button></div>
+    </div>
+  </div>
+<div class="challenge"><b class="k">Challenge</b><p style="margin:.3rem 0 0">With at least 5 minutes of sensor delay, stop the room from hunting. Then ask what you gave up. (Hint: lower the gain, and watch how far from the goal the room settles.)</p><div class="state" id="chs1">Not yet.</div></div>
+</section></div><div class="tabpanel" data-panel="reinforce" role="tabpanel" hidden><section data-sec="reinforce">
+  <div class="head"><span class="no">02</span><h2>Reinforcing feedback amplifies</h2></div>
+  <div class="two">
+    <div>
+      <p>A reinforcing (positive) loop feeds a change back into itself, so more leads to more. “Positive” means it adds, not that it is good. Compound interest, a viral post and a bank run are all the same shape.</p>
+      <p>Nothing grows forever, so a reinforcing loop in the real world almost always meets a balancing loop that finally caps it. Switch the limit on and off and compare the curves. Most of what looks like “exponential growth” is the early part of an S-curve.</p>
+      <div class="ex"><b>Real example</b><p>Arctic ice reflects sunlight. Warming melts ice, dark water absorbs more heat, and that melts more ice. Climate scientists call it the ice-albedo feedback, and it is one reason polar warming outpaces the global average.</p></div>
+    </div>
+    <div class="lab">
+      <div class="chips" id="p2" style="margin-bottom:1rem"></div>
+      <div class="ctl">
+        <label><span class="line"><span>Strength of the loop (growth rate per unit time)</span><span class="v" id="v2r"></span></span><input type="range" id="rate" min="0.05" max="0.8" step="0.01" value="0.35"></label>
+        <label><span class="line"><span>Starting amount</span><span class="v" id="v2x"></span></span><input type="range" id="x0" min="0.1" max="10" step="0.1" value="1"></label>
+        <label><span><input type="checkbox" id="lim" checked>Add a balancing limit (a ceiling of 100)</span></label>
+      </div>
+      <div style="height:.9rem"></div>
+      <canvas id="c2" role="img" aria-label="Growth curve with and without a limiting loop"></canvas>
+      <div class="legend"><span><i style="border-color:var(--loop)"></i><span id="l2a">With limit</span></span><span><i class="dash" style="border-color:var(--err)"></i><span id="l2b">Without limit (clipped at the top)</span></span></div>
+      <div class="verdict" id="verdict2"></div>
+    </div>
+  </div>
+<div class="challenge"><b class="k">Challenge</b><p style="margin:.3rem 0 0">With the limit switched on and a starting amount of 2 or less, reach 90 within 20 time units. Find the loop strength that does it.</p><div class="state" id="chs2">Not yet.</div></div>
+</section></div><div class="tabpanel" data-panel="variety" role="tabpanel" hidden><section data-sec="variety">
+  <div class="head"><span class="no">03</span><h2>Only variety can absorb variety</h2></div>
+  <div class="two">
+    <div>
+      <p>W. Ross Ashby’s law of requisite variety says a regulator must be able to do at least as many different things as the disturbances it faces can do to it. A help desk with 5 canned replies cannot fully handle 14 kinds of problem, however hard it works.</p>
+      <p>You have two honest options. <b>Amplify</b> the regulator: add responses, train people, give them more tools. Or <b>attenuate</b> the disturbances: group similar cases, standardize, triage. Tick the triage box and see how much the same team can then absorb.</p>
+      <div class="ex"><b>Real example</b><p>The immune system keeps billions of distinct antibody variants in reserve because pathogens vary enormously. A chess grandmaster matches the variety of a position by pattern recognition built over years. Both are requisite variety at work.</p></div>
+    </div>
+    <div class="lab">
+      <div class="ctl">
+        <label><span class="line"><span>Kinds of disturbance (D)</span><span class="v" id="v3d"></span></span><input type="range" id="D" min="2" max="16" step="1" value="12"></label>
+        <label><span class="line"><span>Responses the regulator has (R)</span><span class="v" id="v3r"></span></span><input type="range" id="R" min="1" max="16" step="1" value="4"></label>
+        <label><span><input type="checkbox" id="triage">Triage: treat similar disturbances in pairs (one response covers both)</span></label>
+      </div>
+      <div class="bars" id="bars" aria-label="Disturbances handled and missed"></div>
+      <div class="legend"><span><i style="border-color:var(--loop)"></i>Absorbed</span><span><i style="border-color:var(--err)"></i>Gets through</span></div>
+      <div class="verdict" id="verdict3"></div>
+      <div style="margin-top:.8rem"><button class="btn ghost" id="roll3">Roll 300 new disturbances</button></div>
+    </div>
+  </div>
+<div class="challenge"><b class="k">Challenge</b><p style="margin:.3rem 0 0">Absorb every disturbance with 12 or more kinds of trouble and no more than 6 responses. (Hint: attenuate the disturbances.)</p><div class="state" id="chs3">Not yet.</div></div>
+</section></div><div class="tabpanel" data-panel="ultra" role="tabpanel" hidden><section data-sec="ultra">
+  <div class="head"><span class="no">04</span><h2>Ultrastability: a system that rewires itself</h2></div>
+  <div class="two">
+    <div>
+      <p>A thermostat holds a goal but cannot change its own rules. Ashby asked how a system could keep its <b>essential variables</b> (the ones it must hold within limits to survive) inside bounds even when the world changes the rules. His answer was <b>ultrastability</b>: a second loop that watches the essential variables and, when they leave their limits, changes the parameters of the first loop at random, until stability returns.</p>
+      <p>Ashby built the idea as a machine. His Homeostat, completed on 16 March 1948 at Barnwood House Hospital, used four linked units and found stable settings by itself. Wiener called it “one of the great philosophical contributions of the present day”, according to a historical account of the 1952 Macy conference.</p>
+      <p>The model on the right is a one-variable cartoon of the principle, not a replica of the Homeostat. The variable must stay within ±1. When it escapes, the system re-rolls its own setting <i>k</i>. Flip the wiring halfway and watch it find a new working setting without being told how.</p>
+      <div class="ex"><b>Real example</b><p>A person who moves to a new country finds old habits stop working. Nothing tells them the right new habits. They vary behavior until what they need to keep steady (sleep, money, belonging) stays in range again. Bateson’s Learning II (lesson 7) is the same move at the level of habits.</p></div>
+    </div>
+    <div class="lab">
+      <div class="ctl">
+        <label><span class="line"><span>Random kicks from the environment</span><span class="v" id="v4n"></span></span><input type="range" id="noise" min="0" max="0.8" step="0.05" value="0.2"></label>
+        <label><span><input type="checkbox" id="flip" checked>Flip the wiring at t = 30 (the old setting now makes things worse)</span></label>
+      </div>
+      <div style="height:.9rem"></div>
+      <canvas id="c4" role="img" aria-label="A variable that must stay between minus one and one, with the system re-rolling its own setting when it escapes"></canvas>
+      <div class="legend"><span><i style="border-color:var(--loop)"></i>Essential variable x</span><span><i class="dash" style="border-color:var(--err)"></i>Limits ±1 and re-rolls</span><span><i style="border-color:var(--sig)"></i>Its current setting k (scaled)</span></div>
+      <div class="verdict" id="verdict4"></div>
+      <div style="margin-top:.8rem"><button class="btn ghost" id="again4">Run again with new luck</button></div>
+    </div>
+  </div>
+<div class="challenge"><b class="k">Challenge</b><p style="margin:.3rem 0 0">With the wiring flipped and kicks of 0.4 or more, get the system to settle. If luck is against you, run again.</p><div class="state" id="chs4">Not yet.</div></div>
+</section></div>
+</main>
+<div class="pager"><a href="index.html">← Start</a><a href="orders.html">Orders →</a></div>
+</div>
+<script src="assets/common.js"></script>
+<script>
+(function(){
+"use strict";
+
+var P1=[
+  {n:"Calm thermostat",sp:21,gain:.6,delay:0,out:5},
+  {n:"Sluggish",sp:21,gain:.15,delay:0,out:5},
+  {n:"Heavy-handed",sp:21,gain:3,delay:0,out:5},
+  {n:"Laggy shower",sp:21,gain:1.6,delay:6,out:5}
+];
+var reveal1=1,anim1=null;
+function sim1(p,win){
+  var dt=.25,N=Math.round(120/dt),T=[p.out],U=[],dS=Math.round(p.delay/dt);
+  for(var i=0;i<=N;i++){
+    var t=i*dt,meas=i-dS>=0?T[i-dS]:T[0];
+    var u=clamp(p.gain*(p.sp-meas),0,1);
+    var k=(win&&t>=60&&t<80)?.1:.05;
+    U.push(u);T.push(T[i]+(-k*(T[i]-p.out)+1.5*u)*dt);
+  }
+  return{T:T,U:U,dt:dt};
+}
+function run1(){
+  var p={sp:+$("sp").value,gain:+$("gain").value,delay:+$("delay").value,out:+$("out").value},win=$("win").checked;
+  $("v1sp").textContent=fmt(p.sp)+" °C";$("v1g").textContent=fmt(p.gain);$("v1d").textContent=fmt(p.delay)+" min";$("v1o").textContent=p.out+" °C";
+  var r=sim1(p,win),tl=[],ul=[],ol=[],gl=[];
+  for(var i=0;i<=480;i++){var t=i*r.dt;tl.push([t,r.T[i]]);ul.push([t,-10+r.U[i]*9]);}
+  ol=[[0,p.out],[120,p.out]];gl=[[0,p.sp],[120,p.sp]];
+  var o={xmax:120,xstep:20,ymin:-10,ymax:30,yticks:[0,10,20,30],xlabel:"minutes",reveal:reveal1,
+    series:[{data:ol,color:"--muted",dash:[3,4],width:1.5},{data:gl,color:"--sig",dash:[6,4],width:1.5},{data:ul,color:"--err",fill:true,width:1.5},{data:tl,color:"--loop",width:2.5}]};
+  if(win)o.band=[60,80,"window open"];
+  drawChart($("c1"),o);
+  /* verdict over the last stretch before any disturbance, or the end of the run */
+  var a=Math.round(30/r.dt),b=Math.round((win?58:118)/r.dt),mn=1e9,mx=-1e9,sum=0,n=0;
+  for(var j=a;j<=b;j++){mn=Math.min(mn,r.T[j]);mx=Math.max(mx,r.T[j]);sum+=r.T[j];n++}
+  var rev=0,lastS=0;for(var j2=a;j2+4<=b;j2+=4){var dd=r.T[j2+4]-r.T[j2];if(Math.abs(dd)>.05){var sg=dd>0?1:-1;if(lastS&&sg!==lastS)rev++;lastS=sg}}
+  var hunt=(mx-mn>.8&&rev>=3),slope=(r.T[b]-r.T[b-20])/5;
+  var mean=sum/n,peak=Math.max.apply(null,r.T),off=mean-p.sp,v=$("verdict1");
+  var msg,cls;
+  if(hunt){msg="<b>Hunting.</b> The room never settles: it swings between "+fmt(mn)+" and "+fmt(mx)+" °C. The controller keeps correcting old news.";cls="bad"}
+  else if(peak>p.sp+1){msg="<b>Overshoots.</b> Peak "+fmt(peak)+" °C before settling near "+fmt(mean)+" °C.";cls="bad"}
+  else if(Math.abs(slope)>.02&&Math.abs(off)>.7){msg="<b>Still creeping.</b> Low gain makes the room approach the goal slowly: it is still moving about "+fmt(Math.abs(slope)*10)+" °C every 10 minutes at the end of the run. Raise the gain to speed it up.";cls=""}
+  else if(Math.abs(off)>.7){msg="<b>Settles, but off target.</b> It parks "+fmt(Math.abs(off))+" °C "+(off<0?"below":"above")+" the goal. A reaction proportional to the error needs some error to keep the heater on. Raise the gain to shrink the gap.";cls=""}
+  else{msg="<b>Settles close to the goal</b> (within "+fmt(Math.abs(off))+" °C) without swinging.";cls="good"}
+  if(win&&!hunt){var dip=1e9;for(var q=Math.round(60/r.dt);q<=Math.round(85/r.dt);q++)dip=Math.min(dip,r.T[q]);msg+=" With the window open the room drops to "+fmt(dip)+" °C: the heater is already near full power, so a disturbance can exceed what the regulator can do.";}
+  v.className="verdict "+cls;v.innerHTML=msg;
+}
+function replay1(){
+  if(anim1)cancelAnimationFrame(anim1);
+  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches){reveal1=1;run1();return}
+  var t0=null;reveal1=0;
+  function f(ts){if(t0==null)t0=ts;reveal1=clamp((ts-t0)/3500,0,1);run1();if(reveal1<1)anim1=requestAnimationFrame(f)}
+  anim1=requestAnimationFrame(f);
+}
+(function(){
+  var box=$("p1");
+  P1.forEach(function(p,i){
+    var b=document.createElement("button");b.className="chip";b.textContent=p.n;b.setAttribute("aria-pressed",i===0?"true":"false");
+    b.addEventListener("click",function(){
+      $("sp").value=p.sp;$("gain").value=p.gain;$("delay").value=p.delay;$("out").value=p.out;
+      Array.prototype.forEach.call(box.children,function(c){c.setAttribute("aria-pressed",c===b?"true":"false")});
+      reveal1=1;run1();
+    });box.appendChild(b);
+  });
+  ["sp","gain","delay","out","win"].forEach(function(id){$(id).addEventListener("input",function(){
+    Array.prototype.forEach.call(box.children,function(c){c.setAttribute("aria-pressed","false")});reveal1=1;run1()})});
+  $("replay1").addEventListener("click",replay1);
+})();
+
+
+var P2=[
+  {n:"Viral post",r:.5,x0:.5,u:"hours"},
+  {n:"Bank run",r:.65,x0:1,u:"hours"},
+  {n:"Savings at 7%",r:.07,x0:5,u:"years"},
+  {n:"Slow burn",r:.12,x0:1,u:"time units"}
+];
+function run2(){
+  var r=+$("rate").value,x0=+$("x0").value,lim=$("lim").checked,u=run2.u||"time units",K=100;
+  $("v2r").textContent=fmt(r,2);$("v2x").textContent=fmt(x0);
+  var ex=[],lg=[];
+  for(var i=0;i<=300;i++){var t=i*.1;ex.push([t,x0*Math.exp(r*t)]);lg.push([t,K/(1+((K-x0)/x0)*Math.exp(-r*t))])}
+  var main=lim?lg:ex,ghost=lim?ex:lg;
+  drawChart($("c2"),{xmax:30,xstep:5,ymin:0,ymax:100,yticks:[0,25,50,75,100],xlabel:u,
+    series:[{data:ghost,color:lim?"--err":"--loop",dash:[5,4],width:1.5},{data:main,color:lim?"--loop":"--err",width:2.5}]});
+  $("l2a").textContent=lim?"With limit":"Without limit";$("l2b").textContent=lim?"Without limit (clipped at the top)":"With limit";
+  var dbl=Math.LN2/r,tEx=Math.log(K/x0)/r,t90=Math.log(90*(K-x0)/(x0*10))/r;
+  var m="<b>Doubles every "+fmt(dbl)+" "+u+".</b> ";
+  m+=tEx<=30?"Unchecked, it passes 100 after about "+fmt(tEx)+". ":"Unchecked, it would not reach 100 within the 30 shown. ";
+  m+=t90<=30?"With a limit it reaches 90 near "+fmt(t90)+" and then flattens.":"With a limit it is still in its early, almost exponential phase at 30.";
+  $("verdict2").innerHTML=m;
+}
+(function(){
+  var box=$("p2");
+  P2.forEach(function(p,i){
+    var b=document.createElement("button");b.className="chip";b.textContent=p.n;b.setAttribute("aria-pressed",i===0?"true":"false");
+    b.addEventListener("click",function(){
+      $("rate").value=p.r;$("x0").value=p.x0;run2.u=p.u;
+      Array.prototype.forEach.call(box.children,function(c){c.setAttribute("aria-pressed",c===b?"true":"false")});run2();
+    });box.appendChild(b);
+  });
+  run2.u="hours";
+  $("rate").value=P2[0].r;$("x0").value=P2[0].x0;
+  ["rate","x0","lim"].forEach(function(id){$(id).addEventListener("input",function(){
+    Array.prototype.forEach.call(box.children,function(c){c.setAttribute("aria-pressed","false")});run2()})});
+})();
+
+
+var counts3=null;
+function roll3(){
+  var D=+$("D").value,R=+$("R").value,tri=$("triage").checked,N=300;
+  var groups=tri?Math.ceil(D/2):D,cover=Math.min(R,groups),c=[];
+  for(var i=0;i<D;i++)c.push(0);
+  for(var k=0;k<N;k++){c[Math.floor(Math.random()*D)]++}
+  counts3=c;draw3();
+}
+function draw3(){
+  var D=+$("D").value,R=+$("R").value,tri=$("triage").checked;
+  $("v3d").textContent=D;$("v3r").textContent=R;
+  if(!counts3||counts3.length!==D){roll3();return}
+  var groups=tri?Math.ceil(D/2):D,cover=Math.min(R,groups),mx=Math.max.apply(null,counts3),box=$("bars"),ok=0,tot=0;
+  box.innerHTML="";
+  counts3.forEach(function(n,i){
+    var g=tri?Math.floor(i/2):i,handled=g<cover;tot+=n;if(handled)ok+=n;
+    var b=document.createElement("div");b.className="bar"+(handled?"":" miss");
+    b.innerHTML='<span class="col" style="height:'+Math.max(2,n/mx*120)+'px"></span><span>'+(i+1)+'</span>';
+    b.title="Disturbance "+(i+1)+": "+n+" times, "+(handled?"absorbed":"got through");box.appendChild(b);
+  });
+  var law=Math.min(1,cover/groups),v=$("verdict3");
+  v.className="verdict "+(law>=1?"good":"bad");
+  v.innerHTML="<b>"+ok+" of "+tot+" absorbed ("+Math.round(ok/tot*100)+"%).</b> "+
+    (law>=1?"The regulator has at least as many responses as there are kinds of trouble"+(tri?" after triage":"")+", so nothing gets through.":
+    "With "+R+" responses against "+groups+" distinct "+(tri?"groups":"disturbances")+", the best any strategy can do is cover about "+Math.round(law*100)+"% of the cases. Add responses"+(tri?"":" or tick triage")+" to close the gap.");
+}
+["D","R","triage"].forEach(function(id){$(id).addEventListener("input",function(){if(id==="D")counts3=null;draw3()})});
+$("roll3").addEventListener("click",roll3);
+
+
+var seed4=7;
+function rng(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function run4(){
+  var noise=+$("noise").value,flip=$("flip").checked,rnd=rng(seed4);
+  $("v4n").textContent=fmt(noise,2);
+  var dt=.1,N=600,x=.5,k=.8,sgn=1,xs=[],ks=[],rolls=[],last=0;
+  for(var i=0;i<=N;i++){
+    var t=i*dt;
+    if(flip&&Math.abs(t-30)<dt/2)sgn=-1;
+    x+=-sgn*k*x*dt+noise*(rnd()-.5)*Math.sqrt(dt)*2;
+    x=clamp(x,-1.3,1.3);
+    if(Math.abs(x)>1){k=(rnd()*4-2);rolls.push(t);last=t;x=clamp(x,-1.05,1.05)}
+    xs.push([t,x]);ks.push([t,k*.6]);
+  }
+  var vl=[{x:30,color:"--sig",dash:[6,4]}];
+  if(!flip)vl=[];
+  rolls.forEach(function(t){vl.push({x:t,color:"--err",dash:[2,3]})});
+  drawChart($("c4"),{xmax:60,xstep:10,ymin:-1.5,ymax:1.5,yticks:[-1,0,1],xlabel:"time",vlines:vl,
+    series:[{data:[[0,1],[60,1]],color:"--err",dash:[6,4],width:1.5},{data:[[0,-1],[60,-1]],color:"--err",dash:[6,4],width:1.5},{data:ks,color:"--sig",width:1.5},{data:xs,color:"--loop",width:2.5}]});
+  var v=$("verdict4");
+  var tail=xs.slice(Math.round(N*.8)).map(function(p){return Math.abs(p[1])}),mx=Math.max.apply(null,tail);
+  if(mx<=1&&last<50){v.className="verdict good";v.innerHTML="<b>Re-rolled its own setting "+rolls.length+" time"+(rolls.length===1?"":"s")+" and settled.</b> Its last change was at t = "+fmt(last)+"; after that the variable stays inside the limits."}
+  else{v.className="verdict bad";v.innerHTML="<b>Still searching.</b> "+rolls.length+" re-rolls so far and the variable keeps escaping. With heavy kicks, even a good setting cannot hold. Lower the kicks or run again."}
+}
+["noise","flip"].forEach(function(id){$(id).addEventListener("input",run4)});
+$("again4").addEventListener("click",function(){seed4=(seed4*31+17)%100003;run4()});
+
+
+var CHS={
+ "ch-balance":{el:"chs1",test:function(){return +$("delay").value>=5&&$("verdict1").innerHTML.length>0&&$("verdict1").innerHTML.indexOf("Hunting")<0}},
+ "ch-reinforce":{el:"chs2",test:function(){var r=+$("rate").value,x0=+$("x0").value,t=Math.log(90*(100-x0)/(x0*10))/r;return $("lim").checked&&x0<=2&&t<=20}},
+ "ch-variety":{el:"chs3",test:function(){var D=+$("D").value,R=+$("R").value,g=$("triage").checked?Math.ceil(D/2):D;return D>=12&&R<=6&&R>=g}},
+ "ch-ultra":{el:"chs4",test:function(){return $("flip").checked&&+$("noise").value>=.4&&$("verdict4").className.indexOf("good")>=0}}
+};
+function checkChallenges(){
+  Object.keys(CHS).forEach(function(k){
+    var c=CHS[k],el=$(c.el),ok=false;
+    try{ok=c.test()}catch(e){}
+    if(ok){el.textContent="Done. Nice work.";el.className="state ok";Prog.done(k)}
+    else if(Prog.get().d&&Prog.get().d[k]){el.textContent="Done earlier. Your current settings no longer meet it.";el.className="state ok"}
+    else{el.textContent="Not yet.";el.className="state"}
+  });
+}
+document.addEventListener("input",checkChallenges);
+document.addEventListener("click",function(){setTimeout(checkChallenges,60)});
+onRedraw(function(){run1();run2();run4()});
+run1();run2();roll3();run4();checkChallenges();
+initTabs();
+
+})();
+</script>
+</body>
+</html>

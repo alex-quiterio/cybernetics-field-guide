@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cases · Cybernetics Field Guide</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="cases">
+<div class="wrap">
+<nav class="top" aria-label="Pages"><div class="row"><span class="brand">Cybernetics Field Guide</span><a href="index.html">Start</a><a href="labs.html">Labs</a><a href="orders.html">Orders</a><a href="viable.html">Viable systems</a><a href="atlas.html">Atlas</a><a href="people.html">People</a><a href="cases.html" class="on" aria-current="page">Cases</a><a href="check.html">Check</a></div></nav>
+<header class="phead"><div class="eyebrow">Module 6 of 7 · about 15 minutes</div><h1>Cases and your own loop</h1><p class="lede">Eight real systems taken apart into goal, sensor and actuator, then a builder for a loop of your own.</p></header>
+<main>
+<div class="tabs" role="tablist"><button class="tab" role="tab" data-tab="cases" aria-selected="false">Case files</button><button class="tab" role="tab" data-tab="loop" aria-selected="false">Build your own loop</button></div><div class="tabpanel" data-panel="cases" role="tabpanel" hidden><section data-sec="cases">
+  <div class="head"><span class="no">10</span><h2>Case files</h2></div>
+  <p>Eight real systems, each taken apart into the same four parts. Filter by where they live.</p>
+  <div class="chips" id="casefilter" role="group" aria-label="Filter case files"></div>
+  <div class="casegrid" id="casegrid"></div>
+</section></div><div class="tabpanel" data-panel="loop" role="tabpanel" hidden><section data-sec="loop">
+  <div class="head"><span class="no">Tool</span><h2>Build your own loop</h2></div>
+  <p>Pick something in your life or work that is meant to stay on course, or something that snowballs. Fill in the stations. The checker flags what is missing and where delay will bite.</p>
+  <div class="chips" id="lbpre" role="group" aria-label="Start from an example"></div>
+  <div class="lbform">
+    <label class="wide">What is it?<input type="text" id="lbname" placeholder="e.g. Keeping up with email"></label>
+    <label>Kind of loop<select id="lbkind"><option value="B">Balancing: holds a goal</option><option value="R">Reinforcing: amplifies</option></select></label>
+    <label>Where is the longest delay?<select id="lbdelay"><option value="">Not sure</option><option value="sense">In sensing</option><option value="decide">In deciding</option><option value="act">In acting</option><option value="world">In the world responding</option></select></label>
+    <label>Goal<input type="text" id="lbgoal" placeholder="What are you trying to hold?"></label>
+    <label>Sense<input type="text" id="lbsense" placeholder="How do you find out where things stand?"></label>
+    <label>Compare<input type="text" id="lbcompare" placeholder="What do you compare it with?"></label>
+    <label>Decide<input type="text" id="lbdecide" placeholder="How do you choose what to do?"></label>
+    <label>Act<input type="text" id="lbact" placeholder="What do you actually change?"></label>
+    <label>World responds<input type="text" id="lbworld" placeholder="What changes, and what disturbs it?"></label>
+    <label class="wide" id="lblimitwrap" hidden><span><input type="checkbox" id="lblimit">I can name what will eventually limit this loop (a resource, attention, a rule)</span></label>
+  </div>
+  <div class="stations" id="lbout"></div>
+  <div class="verdict" id="lbcheck"></div>
+  <div style="margin-top:.8rem"><button class="btn ghost" id="lbcopy" type="button">Copy as text</button> <span id="lbcopied" class="mono" style="font-size:.8rem;color:var(--muted)"></span></div>
+</section></div>
+</main>
+<div class="pager"><a href="people.html">← People</a><a href="check.html">Check →</a></div>
+</div>
+<script src="assets/common.js"></script>
+<script>
+(function(){
+"use strict";
+
+var CASES=[
+  {tag:"Machines",yr:"1788",n:"Watt’s flyball governor",goal:"A steady engine speed",sense:"Two weighted balls swing outward as the shaft spins faster",act:"The balls’ lift closes the steam valve through a linkage",catch:"Badly tuned governors hunted, speeding up and slowing down in waves. Maxwell’s 1868 paper “On Governors” gave the first mathematical analysis of their stability."},
+  {tag:"Machines",yr:"c. 1900",n:"The household thermostat",goal:"The temperature on the dial",sense:"A bimetal strip bends with heat, later a thermistor",act:"Switches the furnace on or off",catch:"Real thermostats add hysteresis, a deliberate gap between on and off points, so the furnace does not chatter on and off every few seconds."},
+  {tag:"Machines",yr:"1940–43",n:"Anti-aircraft fire control",goal:"A shell that meets the aircraft",sense:"Radar and optical tracking of the target",act:"Gun aiming computed ahead of the target",catch:"Wiener and Julian Bigelow worked on predicting where a pilot would be. The pilot and the gun became one feedback system, which pushed Wiener toward the general theory. Their hardware was never used in combat: the army chose a Bell Labs design."},
+  {tag:"Machines",yr:"1950s on",n:"Cruise control",goal:"A speed set by the driver",sense:"Wheel-speed sensors",act:"Throttle actuator",catch:"Most use a PID law. P reacts to the present error, I to the error accumulated so far, D to how fast it is changing. Too much P or too much delay gives the hunting you saw in lesson 1."},
+  {tag:"Living",yr:"Evolved",n:"Body temperature",goal:"About 37 °C core",sense:"Thermoreceptors in skin and the hypothalamus",act:"Shivering, sweating, shifting blood flow",catch:"Claude Bernard described the body’s internal environment (milieu intérieur, 1865). Walter Cannon coined “homeostasis” in 1926 and popularized it in <i>The Wisdom of the Body</i> (1932). Fever is not a failure of the loop: the set point is raised on purpose."},
+  {tag:"Living",yr:"1983",n:"Daisyworld",goal:"None built in",sense:"Daisies’ growth responds to local temperature",act:"White daisies cool, black daisies warm, by reflecting or absorbing light",catch:"James Lovelock and Andrew Watson’s toy planet holds a stable temperature over a range of solar brightness with no thermostat in it, only competing daisies. A small model of regulation emerging from life."},
+  {tag:"Society",yr:"1971–73",n:"Cybersyn in Chile",goal:"Production targets set with workers and managers",sense:"Telex reports from factories to Santiago",act:"Advice and directives sent back by telex from the Opsroom",catch:"Four parts: Cybernet (a telex network), Cyberstride (software checking factory performance), CHECO (an economic simulator) and the Opsroom. Cybernet was the part regularly used, including during the October 1972 truckers’ strike. Cyberstride was never linked to it, so data was typed in by hand. The 1973 coup ended the project."},
+  {tag:"Society",yr:"Today",n:"Recommendation feeds",goal:"Whatever the platform optimizes, often time or clicks",sense:"What you tap, watch and skip",act:"Ranking what you see next",catch:"A reinforcing loop with you inside it: the system learns from your behavior while shaping that behavior. Second-order cybernetics in your pocket. No law of nature caps it, only design choices."}
+];
+var caseTag="All";
+function renderCases(){
+  var tags=["All","Machines","Living","Society"],f=$("casefilter");
+  if(!f.children.length){tags.forEach(function(t){var b=document.createElement("button");b.className="chip";b.textContent=t;b.setAttribute("aria-pressed",t==="All"?"true":"false");
+    b.addEventListener("click",function(){caseTag=t;Array.prototype.forEach.call(f.children,function(c){c.setAttribute("aria-pressed",c===b?"true":"false")});renderCases()});f.appendChild(b)})}
+  var g=$("casegrid");g.innerHTML="";
+  CASES.filter(function(c){return caseTag==="All"||c.tag===caseTag}).forEach(function(c){
+    var d=document.createElement("article");d.className="case";
+    d.innerHTML='<div><span class="yr">'+c.yr+' · '+c.tag+'</span><h3>'+c.n+'</h3></div><dl><dt>Goal</dt><dd>'+c.goal+'</dd><dt>Sensor</dt><dd>'+c.sense+'</dd><dt>Actuator</dt><dd>'+c.act+'</dd></dl><div class="catch">'+c.catch+'</div>';
+    g.appendChild(d);
+  });
+}
+renderCases();
+
+
+var LBF=[["goal","Goal"],["sense","Sense"],["compare","Compare"],["decide","Decide"],["act","Act"],["world","World responds"]];
+var LBP=[
+ {n:"Studying for an exam",kind:"B",name:"Preparing for an exam",goal:"Score 70% on a practice paper",sense:"Weekly practice-test scores",compare:"Score minus 70%",decide:"Pick the weakest topics to revise",act:"Focused study sessions",world:"Topics stay hard, tiredness and other deadlines interfere",delay:"sense",limit:false},
+ {n:"Email inbox",kind:"B",name:"Keeping up with email",goal:"Fewer than 20 unread messages",sense:"Unread count on the screen",compare:"Count minus 20",decide:"Triage: reply, defer or delete",act:"A 30-minute batch twice a day",world:"New mail keeps arriving",delay:"act",limit:false},
+ {n:"Compound savings",kind:"R",name:"Savings that earn interest",goal:"",sense:"Account balance",compare:"",decide:"Interest rule set by the bank",act:"Interest is added",world:"A bigger balance earns more next period",delay:"",limit:false}
+];
+function lbVal(k){return $("lb"+k).value.trim()}
+function lbRender(){
+  var kind=$("lbkind").value,out=$("lbout"),issues=[],filled=0;
+  $("lblimitwrap").hidden=kind!=="R";
+  out.innerHTML="";
+  LBF.forEach(function(f,i){
+    var v=lbVal(f[0]);if(v)filled++;
+    var d=document.createElement("div");d.className="st"+(f[0]==="goal"?" goal":"");
+    d.innerHTML='<div class="role"><span>'+f[1]+'</span><b>'+(f[0]==="goal"?"input":i)+'</b></div><div class="val">'+(v?v.replace(/</g,"&lt;"):"<span style=\'color:var(--muted)\'>not filled in</span>")+'</div>';
+    out.appendChild(d);
+  });
+  if(kind==="B"){
+    if(!lbVal("goal"))issues.push("No goal: a balancing loop needs something to hold, or it has nothing to push toward.");
+    if(!lbVal("sense"))issues.push("No sensing: without a way to find out where things stand, you are steering blind (an open loop).");
+    if(!lbVal("compare"))issues.push("No comparison: nothing tells the loop which way to push, or how hard.");
+    if(!lbVal("act"))issues.push("No action: the loop can notice but not change anything.");
+  }else{
+    if(!lbVal("world"))issues.push("Say what grows or shrinks. A reinforcing loop needs a quantity that feeds itself.");
+    if(!$("lblimit").checked)issues.push("Name the limit. Every reinforcing loop eventually meets something that slows it, and it is better to know yours in advance.");
+  }
+  var dl=$("lbdelay").value,adv={sense:"The longest delay is in sensing, so you are steering by old information. Measure more often, or react less strongly.",decide:"Deciding is the slow step. Agree rules in advance so the response does not wait for a meeting.",act:"Acting is slow to start. React earlier and less strongly, so the correction lands when it is needed.",world:"The world responds slowly, so expect overshoot. Make small changes and wait to see their effect before the next one."};
+  var cv=$("lbcheck"),html="";
+  if(!lbVal("sense")&&!lbVal("act")&&!lbVal("goal")&&!lbVal("world")){cv.className="verdict";cv.innerHTML="Fill in a few stations or start from an example above.";return}
+  if(issues.length){cv.className="verdict bad";html="<b>Not yet a closed loop.</b><ul style='margin:.4rem 0 0 1.1rem;padding:0'>"+issues.map(function(s){return "<li>"+s+"</li>"}).join("")+"</ul>"}
+  else{cv.className="verdict good";html="<b>All stations named.</b> The loop is closed: what the world does is sensed and fed back into the next action."+(filled===6?"":" Some stations are still empty.");if(filled===6)Prog.done("loop")}
+  if(dl)html+="<div style='margin-top:.5rem'><b>Delay.</b> "+adv[dl]+"</div>";
+  cv.innerHTML=html;
+}
+function lbText(){
+  var t=($("lbname").value.trim()||"My loop")+" ("+($("lbkind").value==="B"?"balancing":"reinforcing")+")\n";
+  LBF.forEach(function(f){t+=f[1]+": "+(lbVal(f[0])||"-")+"\n"});
+  return t;
+}
+(function(){
+  var pre=$("lbpre");
+  LBP.forEach(function(p){
+    var b=document.createElement("button");b.className="chip";b.textContent=p.n;b.setAttribute("aria-pressed","false");
+    b.addEventListener("click",function(){
+      Array.prototype.forEach.call(pre.children,function(c){c.setAttribute("aria-pressed",c===b?"true":"false")});
+      $("lbname").value=p.name;$("lbkind").value=p.kind;$("lbdelay").value=p.delay;$("lblimit").checked=p.limit;
+      LBF.forEach(function(f){$("lb"+f[0]).value=p[f[0]]});lbRender();
+    });pre.appendChild(b);
+  });
+  ["lbname","lbkind","lbdelay","lblimit","lbgoal","lbsense","lbcompare","lbdecide","lbact","lbworld"].forEach(function(id){$(id).addEventListener("input",lbRender);$(id).addEventListener("change",lbRender)});
+  $("lbcopy").addEventListener("click",function(){
+    var t=lbText(),done=function(m){$("lbcopied").textContent=m;setTimeout(function(){$("lbcopied").textContent=""},2500)};
+    try{navigator.clipboard.writeText(t).then(function(){done("Copied.")},function(){done("Copy not allowed here. Select the text below instead.")})}catch(e){done("Copy not allowed here.")}
+  });
+  lbRender();
+})();
+initTabs();
+
+})();
+</script>
+</body>
+</html>

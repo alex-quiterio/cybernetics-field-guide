@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>People and history · Cybernetics Field Guide</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="people">
+<div class="wrap">
+<nav class="top" aria-label="Pages"><div class="row"><span class="brand">Cybernetics Field Guide</span><a href="index.html">Start</a><a href="labs.html">Labs</a><a href="orders.html">Orders</a><a href="viable.html">Viable systems</a><a href="atlas.html">Atlas</a><a href="people.html" class="on" aria-current="page">People</a><a href="cases.html">Cases</a><a href="check.html">Check</a></div></nav>
+<header class="phead"><div class="eyebrow">Module 5 of 7 · about 10 minutes</div><h1>People and history</h1><p class="lede">Who built the field, and how it unfolded from a float valve in a water clock to arguments about a third order.</p></header>
+<main>
+<div class="tabs" role="tablist"><button class="tab" role="tab" data-tab="people" aria-selected="false">People</button><button class="tab" role="tab" data-tab="timeline" aria-selected="false">Timeline</button></div><div class="tabpanel" data-panel="people" role="tabpanel" hidden><section data-sec="people">
+  <div class="head"><span class="no">09</span><h2>Who to know</h2></div>
+  <p>Twelve people, with what each is known for and where to start reading. Dates and works are from the sources listed under Refs.</p>
+  <div class="chips" id="pchips" role="group" aria-label="Filter people"></div>
+  <div class="people" id="peoplegrid"></div>
+</section></div><div class="tabpanel" data-panel="timeline" role="tabpanel" hidden><section data-sec="history">
+  <div class="head"><span class="no">11</span><h2>How the field unfolded</h2></div>
+  <ol class="tl" id="tl"></ol>
+</section></div>
+</main>
+<div class="pager"><a href="atlas.html">← Atlas</a><a href="cases.html">Cases →</a></div>
+</div>
+<script src="assets/common.js"></script>
+<script>
+(function(){
+"use strict";
+
+var PEOPLE=[
+ ["Norbert Wiener","1894–1964","Named the field in <i>Cybernetics: Or Control and Communication in the Animal and the Machine</i> (1948). Worked on anti-aircraft prediction with Julian Bigelow, and co-authored the 1943 paper that framed purpose as feedback.","<i>The Human Use of Human Beings</i> (1950)"],
+ ["Warren McCulloch","1898–1969","Neurophysiologist who chaired the Macy cybernetics conferences. With Walter Pitts wrote “A Logical Calculus of the Ideas Immanent in Nervous Activity” (1943), widely credited as a seminal paper for neural networks and automata theory.","The 1943 paper, <i>Bulletin of Mathematical Biophysics</i> 5"],
+ ["W. Ross Ashby","1903–1972","Psychiatrist and engineer. Completed the Homeostat in 1948, wrote <i>Design for a Brain</i> (1952) and <i>An Introduction to Cybernetics</i> (1956), which states the law of requisite variety.","<i>An Introduction to Cybernetics</i>"],
+ ["Gregory Bateson","1904–1980","Anthropologist at the Macy conferences. Information as “a difference which makes a difference”, levels of learning, the double bind, and an ecology of mind.","<i>Steps to an Ecology of Mind</i> (1972)"],
+ ["Margaret Mead","1901–1978","Anthropologist at the Macy conferences. Her 1967 address to the American Society for Cybernetics, published 1968, gave second-order cybernetics its phrase, “cybernetics of cybernetics”.","The ASC history page on “Cybernetics of Cybernetics”"],
+ ["Stafford Beer","1926–2002","Management cybernetician. The Viable System Model, <i>Brain of the Firm</i> (1972), and Project Cybersyn in Chile. Coined POSIWID.","<i>Brain of the Firm</i>"],
+ ["Heinz von Foerster","1911–2002","Edited the Macy conference proceedings, led the Biological Computer Laboratory at the University of Illinois, and drew the first- and second-order distinction.","“Ethics and Second-Order Cybernetics”"],
+ ["Gordon Pask","1928–1996","Built Musicolour (1953, with Robin McKinnon-Wood) and SAKI, a keyboard-skill trainer, then developed Conversation Theory.","Husbands’s chapter on Pask’s machines"],
+ ["Humberto Maturana and Francisco Varela","1928–2021 and 1946–2001","Neurobiologists who introduced autopoiesis as the organization of living systems.","<i>Autopoiesis and Cognition</i> (1980)"],
+ ["John von Neumann","1903–1957","Mathematician close to Wiener’s circle. Worked on self-reproducing automata and, per Arthur Burks, shared mutual influence with Wiener.","<i>Theory of Self-Reproducing Automata</i> (ed. Burks)"],
+ ["Claude Shannon","1916–2001","“A Mathematical Theory of Communication”, <i>Bell System Technical Journal</i> 27 (1948), the year of Wiener’s book.","The 1948 paper"],
+ ["Niklas Luhmann","1927–1998","Sociologist whose social systems theory Scott lists among the strands of second-order cybernetics.","Scott’s 2004 historical introduction"]
+];
+
+var PTAG={"Norbert Wiener":["macy"],"Warren McCulloch":["macy","comp"],"W. Ross Ashby":["macy"],"Gregory Bateson":["macy"],"Margaret Mead":["macy"],
+ "Stafford Beer":["later"],"Heinz von Foerster":["macy","later"],"Gordon Pask":["later"],"Humberto Maturana and Francisco Varela":["later"],
+ "John von Neumann":["macy","comp"],"Claude Shannon":["comp"],"Niklas Luhmann":["later"]};
+(function(){
+  var g=$("peoplegrid"),chips=$("pchips"),cur="all";
+  var F=[["all","Everyone"],["macy","The Macy circle"],["comp","Information and computing"],["later","Later generations"]];
+  F.forEach(function(f){var b=document.createElement("button");b.className="chip";b.textContent=f[1];b.setAttribute("aria-pressed",f[0]==="all"?"true":"false");
+    b.addEventListener("click",function(){cur=f[0];Array.prototype.forEach.call(chips.children,function(c){c.setAttribute("aria-pressed",c===b?"true":"false")});draw()});chips.appendChild(b)});
+  function draw(){
+    g.innerHTML="";
+    PEOPLE.forEach(function(p){
+      if(cur!=="all"&&(PTAG[p[0]]||[]).indexOf(cur)<0)return;
+      var d=document.createElement("article");d.className="person";
+      d.innerHTML='<div><span class="yrs">'+p[1]+'</span><h3>'+p[0]+'</h3></div><p>'+p[2]+'</p><div class="read1">Start with: '+p[3]+'</div>';g.appendChild(d)});
+  }
+  draw();
+})();
+
+var TL=[
+  ["c. 270 BCE","Ctesibius’s float regulator","A float valve keeps a water clock’s flow steady. Often cited as the earliest known feedback device, though “first” is a historian’s judgment."],
+  ["1788","Watt’s centrifugal governor on the steam engine","Feedback control goes industrial. Sources differ on the exact date, with 1769 and 1788 both appearing, probably for different stages of development."],
+  ["1868","Maxwell, “On Governors”","The first mathematical treatment of the stability of a feedback machine."],
+  ["1926","Cannon names homeostasis","Physiology gets its own word for self-regulation."],
+  ["1943","Rosenblueth, Wiener and Bigelow","“Behavior, Purpose and Teleology” argues that goal-directed behavior in machines and animals can be described with feedback."],
+  ["1946–53","The Macy Conferences","A series of ten closed, interdisciplinary meetings funded by the Josiah Macy Jr. Foundation, built around a shared language for feedback and communication."],
+  ["1948","Wiener, <i>Cybernetics</i>","The name enters the world. Claude Shannon’s information theory appears the same year."],
+  ["1943","McCulloch and Pitts, “A Logical Calculus of the Ideas Immanent in Nervous Activity”","Neural activity described with propositional logic, a seminal paper for neural networks and automata theory."],
+  ["1948","Ashby completes the Homeostat","Finished on 16 March 1948: four linked units that find stable settings by changing their own parameters (ultrastability)."],
+  ["1952–56","Ashby: <i>Design for a Brain</i>, then <i>An Introduction to Cybernetics</i>","The law of requisite variety is stated clearly."],
+  ["1970","The Good Regulator Theorem","Conant and Ashby, <i>International Journal of Systems Science</i>: “every good regulator of a system must be a model of that system.” Later authors argue the proof supports a weaker claim than the title."],
+  ["1971–73","Cybersyn","Beer’s cybernetic management experiment in Chile."],
+  ["1972","Maturana and Varela on autopoiesis","<i>De máquinas y seres vivos</i> in Chile (English edition 1980): the living cell as a system that produces itself."],
+  ["1967–68","Margaret Mead, “Cybernetics of Cybernetics”","Presented to the American Society for Cybernetics in 1967 and published in 1968. Von Foerster supplied the title. Her proposals got little attention, but the phrase stuck."],
+  ["1956","Bateson and colleagues, the double bind","“Toward a Theory of Schizophrenia” (<i>Behavioral Science</i>), collected in <i>Steps to an Ecology of Mind</i>."],
+  ["1970–72","Bateson on information and learning","The “difference which makes a difference” lecture (1970), then <i>Steps to an Ecology of Mind</i> (1972). <i>Mind and Nature</i> followed in 1979."],
+  ["1974","Von Foerster, <i>Cybernetics of Cybernetics</i>","BCL Report 73.38 at the University of Illinois. Bernard Scott dates the first and second order distinction to this work."],
+  ["1991–92","Von Foerster, “Ethics and Second-Order Cybernetics”","Given as a Paris address in 1991 and published in <i>Cybernetics and Human Knowing</i> 1(1), 1992."],
+  ["2000s–now","Third order proposals","Lepskiy’s group in Moscow, then others, use “third-order cybernetics” for different ideas. Umpleby, Lepskiy and Medvedeva summarize one in 2018."]
+];
+(function(){var ol=$("tl");TL.forEach(function(t){var li=document.createElement("li");li.innerHTML='<span class="y">'+t[0]+'</span><b>'+t[1]+'</b><span>'+t[2]+'</span>';ol.appendChild(li)})})();
+
+
+initTabs();
+
+})();
+</script>
+</body>
+</html>
