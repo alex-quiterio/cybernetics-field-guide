@@ -173,6 +173,14 @@ table.orders tr:last-child td,table.orders tr:last-child th{border-bottom:0}
 .term .tag{font-family:var(--mono);font-size:.68rem;letter-spacing:.09em;text-transform:uppercase;color:var(--loop)}
 .term p{margin:.3rem 0 0;font-size:.9rem}
 .term .src{font-family:var(--mono);font-size:.75rem;color:var(--muted);margin-top:.4rem;display:block}
+.term details{margin-top:.6rem;border-top:1px solid var(--line);padding-top:.5rem}
+.term summary{cursor:pointer;font-family:var(--mono);font-size:.78rem;color:var(--sig);list-style:none}
+.term summary::-webkit-details-marker{display:none}
+.term summary::before{content:"+ ";}
+.term details[open] summary::before{content:"− ";}
+.term details p{margin:.45rem 0 0;font-size:.88rem}
+.term details p b{font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;display:block}
+.gtools{display:flex;gap:.5rem;flex-wrap:wrap;margin:.2rem 0 .4rem}
 .nores{color:var(--muted);margin-top:1rem}
 .people{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;margin-top:1.2rem}
 .person{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.45rem}
@@ -394,9 +402,10 @@ footer{margin-top:3rem;color:var(--muted);font-size:.85rem}
 <!-- 8 -->
 <section id="atlas">
   <div class="head"><span class="no">08</span><h2>Concept atlas</h2></div>
-  <p>Thirty-two terms you will meet in the literature, each with its origin where one is known. Search or filter.</p>
+  <p>Thirty-two terms you will meet in the literature, each with its origin where one is known. Open “Go deeper” on any term for why it matters, an example and a common mistake. Search or filter.</p>
   <input class="srch" id="gsearch" type="search" placeholder="Search terms, e.g. variety, loop, observer" aria-label="Search the concept atlas">
   <div class="chips" id="gchips" role="group" aria-label="Filter concepts"></div>
+  <div class="gtools"><button class="btn ghost" id="gopen" type="button">Expand all</button><button class="btn ghost" id="gclose" type="button">Collapse all</button></div>
   <div class="gloss" id="gloss"></div>
   <p class="nores" id="gnores" hidden>No term matches that search.</p>
 </section>
@@ -885,8 +894,42 @@ var GL=[
  ["Learning levels","Observer","Bateson’s hierarchy: Learning I corrects a choice within a set of alternatives, Learning II changes the set, Learning III changes the process of Learning II.","Bateson"],
  ["Double bind","Observer","A pattern of contradictory messages at different logical levels with no way out and no way to comment on it. Proposed by Bateson’s Palo Alto group in 1956 as one contributor to schizophrenic communication; that clinical claim is contested.","Bateson, 1956"]
 ];
+var GX={
+"Feedback":["The defining move of cybernetics is to look at the whole circuit instead of one link. Once an output returns to the input, a system can correct itself, but it can also run away or oscillate. Which one happens depends on the sign of the loop, the strength of the response and the delay.","A driver sees the car drift, turns the wheel, and sees the drift change. Each action is chosen from the result of the last one.","Feedback is not praise or criticism. In cybernetics it means any return of results into the next action, including purely mechanical return."],
+"Balancing (negative) feedback":["Balancing loops are why things stay the same in a changing world. They have limits: a loop can only act within the range of its actuator, as the heater in lesson 1 shows when the window is open.","Blood sugar rises, insulin is released, and blood sugar falls back toward its usual range.","“Negative” does not mean bad. It means the response opposes the change."],
+"Reinforcing (positive) feedback":["A reinforcing loop has no built-in stopping point. In practice something else stops it, such as a resource running out or a balancing loop engaging, which is why growth curves bend into S-shapes (lesson 2).","A rumor spreads because each person who hears it tells others, and slows when most of the audience has already heard it.","“Vicious circle” and “virtuous circle” are both reinforcing loops. The loop does not care whether the outcome is good."],
+"Circular causality":["Linear thinking asks what caused X. Circular thinking asks which pattern X is part of. In a loop each element is both cause and effect, so blaming a single link often misses the pattern.","A manager micromanages because staff seem unreliable, and staff become less reliable because they are micromanaged.","It does not mean everything happens at once or that causes are mystical. The loop runs through time, usually with delays."],
+"Goal (set point, reference)":["In a machine the goal is set from outside. In a living system it often appears as a range of essential variables. In an organization it is negotiated. Asking who sets the goal is where first-order cybernetics meets second-order.","A thermostat dial at 21 °C, a body near 37 °C, a company’s quarterly target.","A goal need not be a single value. Many regulators hold a range."],
+"Error":["Error is the signal the whole loop runs on. A controller that acts only on the current error leaves a steady offset, which is what the Sluggish preset in lesson 1 shows. Adding an integral term is the standard fix.","The room is at 19.8 °C against a goal of 21, so the error is 1.2 °C and the heater runs in proportion.","Error here means a gap between goal and state, not a mistake or a fault."],
+"Gain":["High gain corrects quickly but amplifies noise and stale information. Low gain is calm but slow and leaves larger offsets. Good tuning is a trade-off, and the right gain depends on the delay in the loop.","Yanking the shower tap on every temperature change versus nudging it a little.","More gain is not more control. Past a threshold the loop becomes unstable."],
+"Delay":["Delay turns a stable loop into an oscillating one because the controller acts on the past. The remedies are faster sensing, gentler gain, or prediction.","A shower, or a supply chain ordering from last month’s sales, both overshoot when they react to old information.","Delay is not slowness of the system. It is the lag in information or action somewhere around the loop."],
+"Hunting":["Hunting was a practical problem in early governors: engines surged up and down. Maxwell’s 1868 analysis put stability at the center, so loops could be designed to settle instead of tuned by trial and error.","The Laggy shower preset in lesson 1.","Hunting is not randomness. It is regular, and the loop’s own structure causes it."],
+"PID control":["P reacts to now, I to the accumulated past, D to the trend. Together they remove offset, speed up response and damp overshoot, at the cost of tuning three numbers.","Cruise control and many industrial temperature and flow controllers.","PID is a tool for holding one variable to a known goal. It knows nothing about whether the goal is the right one."],
+"Hysteresis":["A deliberate gap between on and off points stops a switching controller from chattering, which wastes energy and wears equipment. The price is a variable that swings inside the gap.","The hero thermostat: heat on below 20.5 °C, off above 21.5 °C.","In physics hysteresis can also mean dependence on history. Here it means the on and off gap, a related idea."],
+"Servomechanism":["A servo makes an output follow a command by feeding back the error. Wiener’s wartime work on predicting a moving target belongs to this lineage, and it added statistics to the picture.","A position control that makes a robot joint reach and hold an angle.","A servo is not the same as a motor. It is the loop around the motor."],
+"Homeostasis":["Cannon chose a Greek root meaning “similar” instead of “same” to stress that the condition is dynamic. Homeostasis rests on several balancing loops, and the set points can move.","Core temperature, blood glucose and blood acidity are all held in narrow ranges.","Homeostasis is not constancy. A fever raises the set point on purpose, and some authors use the word allostasis for regulation through change."],
+"Teleology as feedback":["The 1943 paper separates behavior controlled by signals from the goal (feedback) from behavior without such signals, and argues the first can be called purposeful without appeal to final causes.","A target-seeking device that corrects its course by sensing its goal.","It does not claim machines have intentions like people. It defines purposeful behavior by its organization."],
+"Information (Shannon)":["Shannon set meaning aside on purpose: information measures how surprising a message is among alternatives and how much a channel can carry. That choice made engineering communication possible and left meaning to others, which is where Bateson and second-order cybernetics came in.","A fair coin flip carries one bit.","Shannon information is not the same as meaning, relevance or truth."],
+"Information (Bateson)":["A difference becomes information only when something is sensitive to it. A thermostat reacts to 20.4 versus 21.6 °C and ignores the colour of the room.","A smoke detector is sensitive to particles in the air, not to how the smoke looks.","It does not say every difference matters. It says information exists relative to what can respond."],
+"Noise":["Noise limits how fast and how precisely a loop can act. Averaging, filtering and redundancy all trade speed for reliability.","A jittery sensor makes a controller twitch unless its readings are smoothed.","One system’s noise can be another’s signal. What counts as noise depends on what the observer is trying to receive."],
+"Variety":["Variety is counted over a defined set of distinctions, so it depends on how an observer chooses to describe the system. Cutting variety by grouping states is as important as adding it.","A light with three colours has variety 3. A dial with ten settings has variety 10.","Variety is not complexity in the everyday sense. It is a count of distinguishable states, relative to an observer."],
+"Law of requisite variety":["The law does not say how to get variety. The two moves are to amplify the regulator or to attenuate the disturbances (lesson 3). It also means a simple controller cannot fully control a complex environment.","A help desk with five canned replies facing fourteen kinds of problem.","“Only complexity can absorb complexity” is a loose paraphrase that cannot be reliably attributed to Ashby. His wording is about variety."],
+"Black box":["When you cannot look inside a system you can still learn its behavior by varying inputs and recording outputs. The cybernetic point is that this is how we come to know most systems, including each other.","Learning an unfamiliar appliance by pressing buttons and watching what happens.","Whether something is a black box depends on the observer. What is opaque to one person can be transparent to another."],
+"Essential variables":["They define what survival means for the system. Regulation is the art of keeping them in range while everything else is free to vary. Ultrastability exists to protect them.","Body temperature, blood oxygen and blood glucose.","They are not necessarily the most visible variables. They are the ones whose limits cannot be crossed."],
+"Ultrastability":["The mechanism is trial and error. The second loop does not know what is right. It keeps changing the first loop’s settings until the essential variables stay in range again (lesson 4).","A person in a new country varies habits until sleep, money and belonging are back in range.","It is not learning with understanding. It is selection among settings, and it can take many tries."],
+"Good regulator theorem":["Often summarized as “every good regulator of a system must be a model of that system”. Later authors argue the proof supports a weaker statement, so treat the slogan as intuition: a regulator that tracks what it regulates does better.","A thermostat embodies a minimal model: the heater raises the temperature.","It does not mean the regulator holds a picture in its head. The correspondence is structural."],
+"Viable System Model":["The model gives five functions and one rule: each operating unit must itself contain all five. That recursion is what lets it describe a firm, a department and a country with the same vocabulary (lesson 5).","Project Cybersyn used it to organize a national economy’s reporting.","It is not an organization chart. It describes functions, which may be spread across people or concentrated in one."],
+"Attenuator and amplifier":["Management faces more variety than it can absorb, so it needs filters on the way up (attenuators) and tools that extend its reach on the way down (amplifiers). A Metaphorum appendix calls them two sides of the same coin.","A dashboard that summarizes many cases for a manager, and a policy that one rule can apply to many cases.","Attenuation is not hiding the truth. Done well it keeps the distinctions that matter for the decision."],
+"Algedonic signal":["The word joins Greek roots for pain and pleasure. In the VSM it is an alarm channel that lets a unit tell the top directly when the normal chain of reports would be too slow.","A safety hotline that reaches the board without passing through the line manager.","It is an exception route. If it carries routine traffic it stops working as an alarm."],
+"POSIWID":["It is a diagnostic stance: judge a system by what it consistently does, not by its mission statement. Beer used it against the habit of explaining behavior by stated aims.","A school whose stated aim is learning but whose incentives reward test preparation (an illustration, not a finding).","It is not a claim about anyone’s intentions. It describes outcomes that the system reliably produces."],
+"Autopoiesis":["A cell makes the membrane and enzymes that make the cell. The concept shifts the question from what a living thing is made of to what organization makes it living. Its use outside biology, for example in sociology, is debated.","A living cell maintaining itself.","Autopoiesis is not growth or reproduction. It means self-production of the system’s own components."],
+"Second-order cybernetics":["Von Foerster’s argument is that removing the observer leaves no observation and no description. In practice it means stating your position and purposes, and asking who is doing the describing.","Designing a dashboard and asking what it leaves out, and who chose that.","It is not “everything is subjective”. It means including the observer in the model, not discarding the world."],
+"Conversation theory":["Pask treated understanding as something that emerges between participants, who may be people or points of view, and is tested through exchanges instead of one transmitted message. It extends Shannon’s linear model with continuous feedback between partners.","A teacher and a learner adjusting explanations in turn until they agree what a word means.","It is not just chat. It is a formal framework about how shared understanding is reached and checked."],
+"Learning levels":["Each level changes the set of alternatives of the one below. A change at Learning II can arise from a double bind and may push toward Learning III, though that route is described as rare and risky.","Retuning the gain (I), changing the household’s rules about the dial (II), changing how the household changes rules (III). This is our illustration, not Bateson’s.","Higher is not better. Higher-level change is rarer and riskier, and not always needed."],
+"Double bind":["The 1956 paper used it to explain communication patterns in schizophrenia. The clinical theory is contested today, but the structure, a paradoxical message with no exit and no way to comment on it, is still used in studying communication.","“Be spontaneous!” is a standard textbook paradox: obeying it requires not obeying it.","It is not any contradictory advice. It requires repeated exposure, no escape, and no way to comment on the contradiction."]
+};
 (function(){
-  var tags=["All","Loops","Regulation","Information","Organization","Observer"],cur="All",q="";
+  var tags=["All","Loops","Regulation","Information","Organization","Observer"],cur="All",q="",allOpen=false;
   var chips=$("gchips"),grid=$("gloss"),no=$("gnores");
   tags.forEach(function(t){var b=document.createElement("button");b.className="chip";b.textContent=t;b.setAttribute("aria-pressed",t==="All"?"true":"false");
     b.addEventListener("click",function(){cur=t;Array.prototype.forEach.call(chips.children,function(c){c.setAttribute("aria-pressed",c===b?"true":"false")});render()});chips.appendChild(b)});
@@ -894,13 +937,17 @@ var GL=[
     grid.innerHTML="";var n=0;
     GL.forEach(function(g){
       if(cur!=="All"&&g[1]!==cur)return;
-      var hay=(g[0]+" "+g[2]+" "+g[3]).toLowerCase();if(q&&hay.indexOf(q)<0)return;
+      var x=GX[g[0]]||["","",""];
+      var hay=(g[0]+" "+g[2]+" "+g[3]+" "+x.join(" ")).toLowerCase();if(q&&hay.indexOf(q)<0)return;
       var d=document.createElement("article");d.className="term";
-      d.innerHTML='<span class="tag">'+g[1]+'</span><h3>'+g[0]+'</h3><p>'+g[2]+'</p>'+(g[3]?'<span class="src">'+g[3]+'</span>':'');
+      d.innerHTML='<span class="tag">'+g[1]+'</span><h3>'+g[0]+'</h3><p>'+g[2]+'</p>'+(g[3]?'<span class="src">'+g[3]+'</span>':'')+
+        '<details'+(allOpen?' open':'')+'><summary>Go deeper</summary><p><b>Why it matters</b>'+x[0]+'</p><p><b>Example</b>'+x[1]+'</p><p><b>Common mistake</b>'+x[2]+'</p></details>';
       grid.appendChild(d);n++;
     });
     no.hidden=n>0;
   }
+  $("gopen").addEventListener("click",function(){allOpen=true;render()});
+  $("gclose").addEventListener("click",function(){allOpen=false;render()});
   $("gsearch").addEventListener("input",function(e){q=e.target.value.trim().toLowerCase();render()});
   render();
 })();
