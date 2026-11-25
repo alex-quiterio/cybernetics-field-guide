@@ -153,6 +153,19 @@ svg.vsm line.dash{stroke-dasharray:4 3}
 .q .why.no{background:var(--err-soft)}
 .score{font-family:var(--mono);margin-top:1rem;color:var(--muted)}
 
+.tablewrap{overflow-x:auto;margin-top:1.2rem;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+table.orders{border-collapse:collapse;width:100%;min-width:720px;font-size:.9rem}
+table.orders th,table.orders td{text-align:left;vertical-align:top;padding:.7rem .9rem;border-bottom:1px solid var(--line)}
+table.orders th{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;white-space:nowrap}
+table.orders thead th{color:var(--fg);font-family:var(--display);font-size:1rem;letter-spacing:0;text-transform:none;font-weight:700}
+table.orders tr:last-child td,table.orders tr:last-child th{border-bottom:0}
+.quote{border-left:3px solid var(--sig);margin:1rem 0;padding:.1rem 0 .1rem 1rem;max-width:65ch}
+.quote cite{display:block;font-family:var(--mono);font-size:.75rem;color:var(--muted);font-style:normal;margin-top:.3rem}
+.lens{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.8rem;margin-top:1rem}
+@media (max-width:820px){.lens{grid-template-columns:minmax(0,1fr)}}
+.lens .col{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:.9rem 1rem}
+.lens .col h3{font-size:.95rem;margin-bottom:.4rem;color:var(--loop)}
+.lens .col p{margin:0;font-size:.92rem}
 .read{display:grid;gap:.8rem;margin-top:1rem;padding:0;list-style:none}
 .read li{padding:.7rem 1rem;background:var(--surface);border:1px solid var(--line);border-radius:8px;font-size:.94rem}
 .read b{font-weight:600}
@@ -291,13 +304,41 @@ footer{margin-top:3rem;color:var(--muted);font-size:.85rem}
 <!-- 5 -->
 <section id="observer">
   <div class="head"><span class="no">05</span><h2>First, second and third order</h2></div>
-  <p>“Order” says where the observer stands. Each order takes the one before it and asks who is doing the observing.</p>
-  <div class="cards">
-    <div class="card"><span class="by">Wiener, Ashby, 1940s–50s</span><h3>First order: the cybernetics of observed systems</h3><p>An observer outside the system studies how it is controlled: goals, sensors, feedback, variety. The thermostat, the governor and the anti-aircraft predictor are all described this way. Lessons 1 to 4 on this page are first-order.</p></div>
-    <div class="card"><span class="by">Mead, von Foerster, Maturana and Varela, 1960s–70s</span><h3>Second order: the cybernetics of observing systems</h3><p>The observer is part of what is observed. Descriptions are made by someone, from somewhere, for some purpose. The goal in a thermostat is set by a person who is cold. Autopoiesis, the idea that a cell produces the parts that produce the cell, belongs here, as does von Foerster’s ethical imperative: “Act always so as to increase the number of choices.” He later said he would rather phrase it as a personal rule: “I always try to act so as to increase the number of choices.”</p></div>
-    <div class="card"><span class="by">Contested, 1990s onward</span><h3>Third order: no agreed definition</h3><p>The term is used, but researchers disagree on what it adds. Proposals include: systems that can reorganize themselves to adapt to their context (Lepskiy); cybernetics of systems designed to behave ethically; a general hierarchy of higher orders (Yolles’s “metacybernetics”); and autopoietic systems that describe their own description. One paper reports that von Foerster argued a meaningful third order could not be defined. Treat any single definition as one author’s proposal.</p></div>
-  </div>
-  <div class="ex"><b>A worked contrast</b><p>A hospital has a bed-occupancy dashboard. First order: how do admissions, discharges and staffing keep occupancy near target? Second order: who chose that target, what does the dashboard leave out, and how do staff behave once they know it is watched? Third order (in the ethical and adaptive senses): can the hospital revise its own targets and values when they start to harm patients, and who is included in deciding?</p></div>
+  <p>“Order” says where the observer stands. Each order takes the one before it and asks who is doing the observing. The first two are standard. The third is a live argument.</p>
+
+  <h3 style="margin-top:1.5rem">First order: the cybernetics of observed systems</h3>
+  <p>Von Foerster’s shortest description, from his 1991 Paris address “Ethics and Second-Order Cybernetics”:</p>
+  <blockquote class="quote">“First-order cybernetics is the cybernetics of observed systems, while second-order cybernetics is the cybernetics of observing systems.”<cite>Heinz von Foerster, “Ethics and Second-Order Cybernetics” (1991; <i>Cybernetics and Human Knowing</i> 1(1), 1992)</cite></blockquote>
+  <p>He lists first-order’s conceptual machinery as “information,” “circularity,” “recursion,” “control,” “homeostasis,” “dynamic stability,” “fixed points,” “attractors,” “equifinality,” “purpose” and “goal.” It is the toolkit of lessons 1 to 4 on this page. Bernard Scott adds that first-order study can use the research paradigms of the natural sciences and test hypotheses by trying to falsify them. The observer stays outside, which suits engineering, and which von Foerster calls the principle of objectivity: “The properties of the observer shall not enter the description of his observations.”</p>
+
+  <h3 style="margin-top:1.5rem">Second order: the cybernetics of observing systems</h3>
+  <p>Von Foerster argues the observer cannot be removed: “If the properties of the observer (namely to observe and describe) are eliminated, there is nothing left; no observation, no description.” Cyberneticians who treated observing and communicating as a circle were, in his phrase, “entering into a forbidden land”, because self-reference (A implies A) was feared as paradox.</p>
+  <p>The label has a short history. Margaret Mead presented “Cybernetics of Cybernetics” to the American Society for Cybernetics in 1967 (published 1968), and von Foerster supplied the title. His 1974 collection, <i>Cybernetics of Cybernetics</i> (BCL Report 73.38, University of Illinois), set out the distinction. Bernard Scott’s 2004 history in <i>Kybernetes</i> names the main strands: Pask’s Conversation Theory, Maturana’s autopoiesis, Glanville’s “Objects” theory, Luhmann’s social systems theory, sociocybernetics, and cybersemiotics.</p>
+  <p>Von Foerster ties this to ethics. His imperative, quoted in the 1991 text from his earlier paper “On Constructing a Reality”: “The ethical imperative: Act always so as to increase the number of choices.” In the same address he writes: “we become a metaphysician any time we decide upon in principle undecidable questions.” His point is that the questions that matter most (am I apart from the universe, or part of it?) cannot be settled by proof, so you decide and you own the decision. Later in the same text he restates the rule more softly: “they should always try to act so as to increase the number of choices.”</p>
+
+  <h3 style="margin-top:1.5rem">Third order: contested</h3>
+  <p>No single definition exists. The best-documented one comes from Vladimir Lepskiy and colleagues at the Institute of Philosophy of the Russian Academy of Sciences, who have met every two years for about 20 years on “Reflexive Processes and Control”. Stuart Umpleby, with Lepskiy and Tatiana Medvedeva, summarized it in a 2018 paper. Their thesis is a move “from ‘observed systems’ to ‘observing systems’ to ‘self-developing reflexive-active environments’”, and from a subject–object paradigm to subject–subject and then subject–metasubject. Umpleby’s gloss: whereas second order stressed self-reference and a scientist’s reflection on their own understanding, third order is “the study of how a system composed of reflexive systems can itself be reflexive”, as with a society and its government.</p>
+  <p>Other authors use the term differently: systems designed to behave ethically; a general hierarchy of higher orders (Yolles’s “metacybernetics”, 2021); or systems that describe their own description. Umpleby notes the Russian reading of second-order cybernetics also differs from the Western one. Treat the table’s third column as one school’s proposal, not settled doctrine.</p>
+
+  <div class="tablewrap"><table class="orders">
+    <thead><tr><th></th><th>First order</th><th>Second order</th><th>Third order (Lepskiy school)</th></tr></thead>
+    <tbody>
+      <tr><th>Slogan</th><td>Observed systems</td><td>Observing systems</td><td>Self-developing reflexive-active environments</td></tr>
+      <tr><th>Observer</th><td>Outside, objective</td><td>Inside, part of the loop</td><td>Many subjects shaping a shared environment</td></tr>
+      <tr><th>Paradigm</th><td>Subject–object</td><td>Subject–subject</td><td>Subject–metasubject</td></tr>
+      <tr><th>Science type (Stepin)</th><td>Classical</td><td>Non-classical</td><td>Post-non-classical</td></tr>
+      <tr><th>Typical object</th><td>Complex system</td><td>Active systems</td><td>Self-developing reflexive-active environment</td></tr>
+      <tr><th>Core ideas</th><td>Feedback, control, homeostasis, requisite variety</td><td>Autopoiesis, constructivism, conversation, ethical imperative</td><td>Reflexive control, mechanism design, ethics of the subjects studied</td></tr>
+      <tr><th>Key figures</th><td>Wiener, Ashby, McCulloch, Beer</td><td>Mead, von Foerster, Maturana, Varela, Pask, Glanville</td><td>Lepskiy, Umpleby; others use the term differently</td></tr>
+      <tr><th>Status</th><td>Established</td><td>Established</td><td>Contested</td></tr>
+    </tbody>
+  </table></div>
+  <p style="font-size:.85rem;color:var(--muted);margin-top:.5rem">Rows 3 to 5 follow Table 4 in Umpleby, Lepskiy and Medvedeva (2018), which credits Lepskiy (2017). The other rows summarize the sources listed under Refs.</p>
+
+  <h3 style="margin-top:2rem">Try the three lenses</h3>
+  <p>Pick a situation. Each order asks a different question about it.</p>
+  <div class="chips" id="lenschips" role="group" aria-label="Situation"></div>
+  <div class="lens" id="lens"></div>
 </section>
 
 <!-- 6 -->
@@ -342,16 +383,17 @@ footer{margin-top:3rem;color:var(--muted);font-size:.85rem}
     <li><b>Maxwell, “On Governors”</b> (<i>Proceedings of the Royal Society</i> 16, 1868, pp. 270–283). <a href="https://en.wikisource.org/wiki/Page:On_Governors.pdf/1">Wikisource transcription</a>, <a href="https://ClerkMaxwellFoundation.org/Governors.pdf">Clerk Maxwell Foundation</a></li>
     <li><b>Conant and Ashby, “Every good regulator of a system must be a model of that system”</b> (<i>Int. J. Systems Science</i> 1(2), 1970, pp. 89–97, DOI 10.1080/00207727008920220). <a href="https://en.wikipedia.org/wiki/Good_regulator_theorem">Overview of the theorem and its critics</a>, <a href="https://arxiv.org/pdf/2508.06326">2025 critique (arXiv)</a></li>
     <li><b>Ashby, <i>An Introduction to Cybernetics</i></b> (Chapman &amp; Hall, 1956; chapter 11, “Requisite Variety”). <a href="https://www.archive.org/download/introductiontocy00ashb/introductiontocy00ashb_bw.pdf">Archive.org scan</a></li>
-    <li><b>Cybersyn.</b> Eden Medina, <a href="https://www.cambridge.org/core/services/aop-cambridge-core/content/view/4CF75E30D22554152A5EFDC9740E3440/S0022216X06001179a.pdf/designing_freedom_regulating_a_nation_socialist_cybernetics_in_allendes_chile.pdf">“Designing Freedom, Regulating a Nation”</a> (<i>Journal of Latin American Studies</i>, 2006); <a href="https://thereader.mitpress.mit.edu/project-cybersyn-chiles-radical-experiment-in-cybernetic-socialism">MIT Press Reader on Project Cybersyn</a>; <a href="https://en.wikipedia.org/wiki/Project_Cybersyn">Project Cybersyn overview</a></li>
+    <li><b>Cybersyn.</b> Eden Medina, <i>Cybernetic Revolutionaries</i> (MIT Press, 2011); <a href="https://www.cambridge.org/core/services/aop-cambridge-core/content/view/4CF75E30D22554152A5EFDC9740E3440/S0022216X06001179a.pdf/designing_freedom_regulating_a_nation_socialist_cybernetics_in_allendes_chile.pdf">“Designing Freedom, Regulating a Nation”</a> (<i>Journal of Latin American Studies</i>, 2006); <a href="https://thereader.mitpress.mit.edu/project-cybersyn-chiles-radical-experiment-in-cybernetic-socialism">MIT Press Reader on Project Cybersyn</a>; <a href="https://en.wikipedia.org/wiki/Project_Cybersyn">Project Cybersyn overview</a></li>
+    <li><b>Primary texts read for the orders section.</b> <a href="https://uranos.ch/research/references/VonFoerster1992/ethics.pdf">Von Foerster, “Ethics and Second-Order Cybernetics”</a>; <a href="https://cpb-us-e1.wpmucdn.com/blogs.gwu.edu/dist/d/257/files/2016/11/2018-Umpleby-Lepskiy-Medvedeva-2f7teld.pdf">Umpleby, Lepskiy and Medvedeva (2018)</a>; <a href="https://www.emerald.com/insight/content/doi/10.1108/03684920410556007/full/pdf">Scott, “Second-order cybernetics: an historical introduction”</a> (<i>Kybernetes</i> 33(9/10), 2004)</li>
     <li><b>Second-order cybernetics.</b> <a href="https://www.asc-cybernetics.org/CofC/">American Society for Cybernetics history of “Cybernetics of Cybernetics”</a>; <a href="https://en.wikipedia.org/wiki/Second-order_cybernetics">overview</a>; von Foerster, <a href="https://pangaro.com/hciiseminar2019/Heinz_von_Foerster-Ethics_and_Second-order_Cybernetics.pdf">“Ethics and Second-Order Cybernetics”</a></li>
-    <li><b>Third-order cybernetics.</b> Yolles, <a href="https://www.mdpi.com/2079-8954/9/2/34">“Metacybernetics: Towards a General Theory of Higher Order Cybernetics”</a> (<i>Systems</i>, 2021); Umpleby, Lepskiy and Medvedeva, <a href="https://cpb-us-e1.wpmucdn.com/blogs.gwu.edu/dist/d/257/files/2016/11/2018-Umpleby-Lepskiy-Medvedeva-2f7teld.pdf">“Recent developments in cybernetics”</a> (2019)</li>
+    <li><b>Further on third order.</b> Yolles, <a href="https://www.mdpi.com/2079-8954/9/2/34">“Metacybernetics: Towards a General Theory of Higher Order Cybernetics”</a> (<i>Systems</i>, 2021); Umpleby, Lepskiy and Medvedeva, <a href="https://cpb-us-e1.wpmucdn.com/blogs.gwu.edu/dist/d/257/files/2016/11/2018-Umpleby-Lepskiy-Medvedeva-2f7teld.pdf">“Recent developments in cybernetics”</a> (2019)</li>
     <li><b>Daisyworld.</b> Watson and Lovelock, “Biological homeostasis of the global environment: the parable of Daisyworld,” <i>Tellus</i> 35B, 1983, pp. 284–289. <a href="https://www.jameslovelock.org/biological-homeostasis-of-the-global-environment-the-parable-of-daisyworld/">James Lovelock’s site</a></li>
     <li><b>Homeostasis.</b> <a href="https://pubmed.ncbi.nlm.nih.gov/18634840/">From Claude Bernard to Walter Cannon (PubMed)</a></li>
     <li><b>Macy Conferences.</b> <a href="https://asc-cybernetics.org/foundations/history/MacySummary.htm">American Society for Cybernetics summary</a></li>
     <li><b>Feedback in antiquity and the governor.</b> <a href="https://historyofinformation.com/detail.php?entryid=2306">Ctesibius</a>; <a href="https://www3.nd.edu/~pantsakl/Publications/370-ECC07.pdf">European Control Conference 2007 history paper</a></li>
     <li><b>Autopoiesis.</b> <a href="https://en.wikipedia.org/wiki/Autopoiesis_and_Cognition:_The_Realization_of_the_Living">Autopoiesis and Cognition: publication history</a>; <a href="https://link.springer.com/book/10.1007/978-94-009-8947-4">Springer book page</a></li>
   </ul>
-  <p style="margin-top:1rem;font-size:.9rem;color:var(--muted)">Not independently confirmed in a source check: publication years for Wiener’s <i>The Human Use of Human Beings</i> (1950), Medina’s <i>Cybernetic Revolutionaries</i> (2011), Meadows’s <i>Thinking in Systems</i> (a UK edition is dated 2009, so check your edition), Shannon’s 1948 paper, and Beer’s mention of 2,000 telex messages a day. Several sources are encyclopedic or secondary. For anything you plan to cite formally, go to the original.</p>
+  <p style="margin-top:1rem;font-size:.9rem;color:var(--muted)">Checked against primary text: von Foerster’s 1991 address, the Umpleby, Lepskiy and Medvedeva paper and Scott’s history were read in full from the PDFs. Others were checked through search-result summaries and bibliographic listings, not by reading the original. Sources disagree on a few points: the date of Watt’s governor (1769 or 1788), and the date of the truckers’ strike (most say October 1972, one review says 1971). Not confirmed: the year of the Meadows edition you own (a UK edition is dated 2009). For formal citation, use the originals.</p>
 </section>
 
 
@@ -649,7 +691,9 @@ var TL=[
   ["1971–73","Cybersyn","Beer’s cybernetic management experiment in Chile."],
   ["1972","Maturana and Varela on autopoiesis","<i>De máquinas y seres vivos</i> in Chile (English edition 1980): the living cell as a system that produces itself."],
   ["1967–68","Margaret Mead, “Cybernetics of Cybernetics”","Presented to the American Society for Cybernetics in 1967 and published in 1968. Von Foerster supplied the title. Her proposals got little attention, but the phrase stuck."],
-  ["1974","Von Foerster’s <i>Cybernetics of Cybernetics</i>","He separates the cybernetics of observed systems from the cybernetics of observing systems."]
+  ["1974","Von Foerster, <i>Cybernetics of Cybernetics</i>","BCL Report 73.38 at the University of Illinois. Bernard Scott dates the first and second order distinction to this work."],
+  ["1991–92","Von Foerster, “Ethics and Second-Order Cybernetics”","Given as a Paris address in 1991 and published in <i>Cybernetics and Human Knowing</i> 1(1), 1992."],
+  ["2000s–now","Third order proposals","Lepskiy’s group in Moscow, then others, use “third-order cybernetics” for different ideas. Umpleby, Lepskiy and Medvedeva summarize one in 2018."]
 ];
 (function(){var ol=$("tl");TL.forEach(function(t){var li=document.createElement("li");li.innerHTML='<span class="y">'+t[0]+'</span><b>'+t[1]+'</b><span>'+t[2]+'</span>';ol.appendChild(li)})})();
 
@@ -679,6 +723,25 @@ var qs=0,qa=0;
     });
     box.appendChild(d);
   });
+})();
+
+/* ---------- three lenses ---------- */
+var LENS={
+  "Thermostat":["Does the room hold 21 °C? What gain and delay make it hunt, and what is the heater’s limit against an open window?","Who chose 21 °C, and for whom? The person who adjusts the dial is cold, so they are part of the loop. The goal belongs to someone.","A household of people with different comfort needs, bills and values. How does it revise its own rules and settings together, and who is included in that decision?"],
+  "Hospital dashboard":["How do admissions, discharges and staffing keep bed occupancy near target? Where is the delay between data and action?","Who chose the target, and what does the dashboard leave out? How do staff behave once they know they are measured?","Can the hospital revise its own targets and values when they start to harm patients, and who sits in that conversation?"],
+  "Recommendation feed":["Which signals (taps, watch time) feed which ranking, and is the loop reinforcing or balancing?","The system learns from your behavior while shaping it. Who defines “engagement”, and from whose position is the feed called good?","How do the people in the system, and the platform, collectively change what the feed is for? Whose interests can alter the rules?"],
+  "City climate policy":["Which indicators (emissions, heat days) are compared with which targets, and how fast can the city respond?","Whose measurements and models count? Who decides which risks to track, and how does being measured change behavior?","A city of many reflexive actors that reshapes its own institutions and environment. How does the whole learn and govern itself, with ethics built in?"]
+};
+(function(){
+  var chips=$("lenschips"),box=$("lens"),names=Object.keys(LENS);
+  function show(n){
+    Array.prototype.forEach.call(chips.children,function(c){c.setAttribute("aria-pressed",c.textContent===n?"true":"false")});
+    box.innerHTML="";
+    ["First order","Second order","Third order (one school’s reading)"].forEach(function(h,i){
+      var d=document.createElement("div");d.className="col";d.innerHTML="<h3>"+h+"</h3><p>"+LENS[n][i]+"</p>";box.appendChild(d)});
+  }
+  names.forEach(function(n){var b=document.createElement("button");b.className="chip";b.textContent=n;b.addEventListener("click",function(){show(n)});chips.appendChild(b)});
+  show(names[0]);
 })();
 
 /* ---------- redraw hooks ---------- */
